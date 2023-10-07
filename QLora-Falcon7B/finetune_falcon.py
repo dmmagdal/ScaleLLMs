@@ -17,6 +17,8 @@ def main():
 	# Load the model
 	###################################################################
 
+	# Define model for download and the bitsandbytes config for the
+	# quantization step.
 	# model_id = "tiiuae/falcon-7b"
 	model_id = "EleutherAI/gpt-neox-20b"		# Note that the target_module specified below in LoraConfig will only work with this model
 	bnb_config = BitsAndBytesConfig(
@@ -40,6 +42,7 @@ def main():
 	model.gradient_checkpointing_enable()
 	# model = prepare_model_for_kbit_training(model)
 
+	# Define the Lora config for the finetuning.
 	config = LoraConfig(
 		r=8, 								# the rank of the update matrices. Lower rank results in smaller update matrices with fewer trainable parameters
 		lora_alpha=32, 						# LoRA scaling factor
@@ -66,7 +69,7 @@ def main():
 	###################################################################
 
 	tokenizer.pad_token = tokenizer.eos_token
-	trainer = transformers.Trainer(
+	trainer = transformers.trainer(
 		model=model,							# model
 		train_dataset=data["train"],			# dataset
 		args=transformers.TrainingArguments(	# training args
