@@ -66,7 +66,7 @@ def main():
 	###################################################################
 
 	tokenizer.pad_token = tokenizer.eos_token
-	trainer = transformers.trainer(
+	trainer = transformers.Trainer(
 		model=model,							# model
 		train_dataset=data["train"],			# dataset
 		args=transformers.TrainingArguments(	# training args
