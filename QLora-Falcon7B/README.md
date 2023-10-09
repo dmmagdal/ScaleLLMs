@@ -1,6 +1,17 @@
-# QLora Falckn 7B
+# QLora Falcon 7B
 
 Description: This is a quick example of finetuning the Falcon 7B model with QLora given a set of text.
+
+
+### Notes
+
+ - LLM models I want to quantize:
+	 - Falcon 1.3B and/or 7B (maybe do 40B if I have the resources)
+	 - Llama 2 7B and/or 13B (most likely dont have enough resources for 70B)
+	 - T5 (an older model whose uses I have yet to understand but has great zero shot versatility from what I've heard)
+	 - Flan-T5 (let's see how the ChatGPT killer really performs)
+ - As of writing this (10/07/2023), I have been able to download the `bitsandbytes` module required for quantizing models. However, upon trying to run the programs, I get an error from `bitsandbytes` regarding the module not being able to locate the CUDA version. Going to GitHub, I've seen this is an issue with other users and the repo owner has marked such issues as `[CUDA_SETUP]` and `[low-priority]`. I have low expectations as to whether this will be updated anytime soon.
+	 - I am considering alternatives such as GGML/GGUL and GPTQ for quantizing the models. Actual finetuning may be different as a result but I have to get to that part next.
 
 
 ### References
