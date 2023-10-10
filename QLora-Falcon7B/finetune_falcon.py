@@ -40,7 +40,7 @@ def main():
 	# for training. For that use the prepare_model_for_kbit_training 
 	# method from PEFT.
 	model.config.use_cache = False
-	# model = prepare_model_for_kbit_training(model)
+	model = prepare_model_for_kbit_training(model)
 
 	# Define the Lora config for the finetuning.
 	config = LoraConfig(
@@ -56,6 +56,8 @@ def main():
 	model = get_peft_model(model, config)
 	print_trainable_parameters(model)
 
+	tokenizer.pad_token = tokenizer.eos_token
+
 	###################################################################
 	# Load the dataset
 	###################################################################
@@ -63,14 +65,15 @@ def main():
 	# Using the English quotes dataset.
 	data = load_dataset("Abirate/english_quotes")
 	data = data.map(
-		lambda samples: tokenizer(samples["quote"]), batched=True
+		lambda samples: tokenizer(samples["quote"]), 
+		batched=True
 	)
 
 	###################################################################
 	# Train the model
 	###################################################################
 
-	tokenizer.pad_token = tokenizer.eos_token
+	# tokenizer.pad_token = tokenizer.eos_token
 	trainer = transformers.Trainer(
 		model=model,							# model
 		train_dataset=data["train"],			# dataset
