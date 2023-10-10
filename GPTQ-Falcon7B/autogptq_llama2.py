@@ -23,18 +23,17 @@ def main():
 	# quantization step.
 	model_id = "facebook/opt-125m"
 	gptq_config = GPTQConfig(
-		bits=4,						# enable 4bit quantization by replacing the linear layers with fp4/nf4 layers from bitsandbytes
-		group_size=128,
-		dataset="c4",
-		desc_act=False,
+		bits=4,						# the number of bits to quantize to, supported numbers are (2, 3, 4, 8).
+		dataset="c4",				# the dataset used for quantization. You can provide your own dataset in a list of string or just use the original datasets used in GPTQ paper [‘wikitext2’,‘c4’,‘c4-new’,‘ptb’,‘ptb-new’]
+		desc_act=False,				# whether to quantize columns in order of decreasing activation size. Setting it to False can significantly speed up inference but the perplexity may become slightly worse. Also known as act-order.
 	)
 
 	# Initialize model tokenizer and the model.
 	tokenizer = AutoTokenizer.from_pretrained(model_id)
 	model = AutoModelForCausalLM.from_pretrained(
 		model_id,
-		quantization_config=gptq_config,		# quantizes the model with the above config
-		device_map="auto",						# note that you will need GPU to quantize the model.
+		quantization_config=gptq_config,	# quantizes the model with the above config
+		device_map="auto",					# note that you will need GPU to quantize the model.
 		trust_remote_code=True,
 	)
 

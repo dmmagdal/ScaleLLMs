@@ -23,7 +23,9 @@ Description: This is a quick example of finetuning the Falcon 7B model with QLor
 	 - [Quantization concept](https://huggingface.co/docs/text-generation-inference/conceptual/quantization)
 	 - [Lora](https://huggingface.co/docs/peft/conceptual_guides/lora)
 	 - [PeftConfig](https://huggingface.co/docs/peft/main/en/package_reference/config#peft.PeftConfig)
+	 - [Peft GitHub](https://github.com/huggingface/peft)
 	 - [Huggingface blog](https://huggingface.co/blog/4bit-transformers-bitsandbytes)
+     - [Huggingface blog on peft](https://huggingface.co/blog/peft)
  - tutorial
 	 - [GPT-Neo Video](https://www.youtube.com/watch?v=NRVaRXDoI3g)
 	 - [GPT-Neo Collab](https://colab.research.google.com/drive/1Vvju5kOyBsDr7RX_YAvp6ZsSOoSMjhKD?usp=sharing#scrollTo=E0Nl5mWL0k2T)

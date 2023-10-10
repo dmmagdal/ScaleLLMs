@@ -26,8 +26,27 @@ Description: This repo aims to look at different techniques that can allow for L
 	 - GPTQ
 	 - GGML/GGUF
  - QLora
- - GPTQ
+	 - `bitsandbytes` requires CUDA GPU to do quantization
+	 - `bitsandbytes` benefits:
+		 - Can peform "zero-shot quantization" (does not require input data to calibrate the quantized model)
+		 - Can quantize any model out of the box as long as it contains `torch.nn.Linear` modules 
+		 - Quantization is peformed on model load, no need to run any post-processing or preparation step
+		 - Zero peformance degreation when loading adapters and can also merge adapters in a dequantized model
+	 - `bitsandbytes` shortcomings:
+		 - 4-bit quantization not serializable
+ - GPTQs
+	 - `auto-gptq` requires CUDA or RoCM (AMD) GPU to do quantization
+	 - `auto-gptq` benefits:
+		 - fast for text generation
+		 - n-bit support
+		 - easily serializable
+	 - `auto-gptq` shortcomings:
+		 - requires a calibration dataset
+		 - works for language models only (at the time of writing this 10/2020)
  - GGML/GGUF
+ - Can finetune quantized models with `peft` library from huggingface (for GPTQ and QLora quantization)
+	 - PEFT stands for "parameter efficient finetuning"
+	 - Training on quantized models is not possible
 
 ### References
 
