@@ -11,7 +11,6 @@ from transformers import GPTQConfig
 from transformers import Trainer, TrainingArguments
 from transformers import DataCollatorForLanguageModeling
 from peft import LoraConfig, get_peft_model
-# from peft import prepare_model_for_int8_training
 from peft import prepare_model_for_kbit_training
 
 
@@ -23,7 +22,7 @@ def main():
 	# Define model for download and the (auto) gptq config for the
 	# quantization step.
 	model_id = "facebook/opt-125m"
-	gptq_config =GPTQConfig(
+	gptq_config = GPTQConfig(
 		bits=4,						# enable 4bit quantization by replacing the linear layers with fp4/nf4 layers from bitsandbytes
 		group_size=128,
 		dataset="c4",
@@ -209,3 +208,7 @@ def main():
 
 	# Exit the program.
 	exit(0)
+
+
+if __name__ == '__main__':
+	main()
