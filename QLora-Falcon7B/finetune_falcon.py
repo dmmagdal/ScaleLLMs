@@ -39,8 +39,8 @@ def main():
 	# We have to apply some preprocessing to the model to prepare it 
 	# for training. For that use the prepare_model_for_kbit_training 
 	# method from PEFT.
-	model.config.use_cache()
-	model = prepare_model_for_kbit_training(model)
+	model.config.use_cache = False
+	# model = prepare_model_for_kbit_training(model)
 
 	# Define the Lora config for the finetuning.
 	config = LoraConfig(
@@ -71,7 +71,7 @@ def main():
 	###################################################################
 
 	tokenizer.pad_token = tokenizer.eos_token
-	trainer = transformers.trainer(
+	trainer = transformers.Trainer(
 		model=model,							# model
 		train_dataset=data["train"],			# dataset
 		args=transformers.TrainingArguments(	# training args
