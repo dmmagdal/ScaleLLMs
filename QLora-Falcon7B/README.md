@@ -20,6 +20,7 @@ Description: This is a quick example of finetuning the Falcon 7B model with QLor
 	 - [AutoModelForCausalLM](https://huggingface.co/docs/transformers/v4.34.0/en/model_doc/auto#transformers.AutoModelForCausalLM)
 	 - [BitsAndBytesConfig](https://huggingface.co/docs/transformers/main_classes/quantization#transformers.BitsAndBytesConfig)
 	 - [Quantization](https://huggingface.co/docs/transformers/v4.34.0/en/main_classes/quantization#quantization)
+	 - [Quantization concept](https://huggingface.co/docs/text-generation-inference/conceptual/quantization)
 	 - [Lora](https://huggingface.co/docs/peft/conceptual_guides/lora)
 	 - [PeftConfig](https://huggingface.co/docs/peft/main/en/package_reference/config#peft.PeftConfig)
 	 - [Huggingface blog](https://huggingface.co/blog/4bit-transformers-bitsandbytes)
