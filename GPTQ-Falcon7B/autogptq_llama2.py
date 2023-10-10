@@ -113,7 +113,10 @@ def main():
 
 	# Below we will load a llama 7b quantized in 4bit.
 	model_id = "TheBloke/Llama-2-7b-Chat-GPTQ"
-	model = AutoModelForCausalLM.from_pretrained(model_id, device_map="auto")
+	model = AutoModelForCausalLM.from_pretrained(
+		model_id, 
+		device_map="auto",
+	)
 	tokenizer = AutoTokenizer.from_pretrained(model_id)
 
 	# Once tokenizer and model has been loaded, let's generate some 
@@ -177,7 +180,10 @@ def main():
 
 	# Finally, let's load a dataset and we can train our model.
 	data = load_dataset("Abirate/english_quotes")
-	data = data.map(lambda samples: tokenizer(samples["quote"]), batched=True)
+	data = data.map(
+		lambda samples: tokenizer(samples["quote"]), 
+		batched=True
+	)
 
 	# needed for llama 2 tokenizer
 	tokenizer.pad_token = tokenizer.eos_token

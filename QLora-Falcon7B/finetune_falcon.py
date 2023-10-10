@@ -8,7 +8,7 @@ from datasets import load_dataset
 import transformers
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from transformers import BitsAndBytesConfig
-# from peft import prepare_model_for_kbit_training
+from peft import prepare_model_for_kbit_training
 from peft import LoraConfig, get_peft_model
 from trl import SFTTrainer
 
@@ -40,7 +40,7 @@ def main():
 	# for training. For that use the prepare_model_for_kbit_training 
 	# method from PEFT.
 	model.config.use_cache()
-	# model = prepare_model_for_kbit_training(model)
+	model = prepare_model_for_kbit_training(model)
 
 	# Define the Lora config for the finetuning.
 	config = LoraConfig(
