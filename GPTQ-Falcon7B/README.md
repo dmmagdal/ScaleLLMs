@@ -5,7 +5,12 @@ Description: This is a quick example of finetuning the Falcon 7B model with GPTQ
 
 ### Notes
 
-
+ - Conda's conda-forge doesn've have the necessary/updated version of `auto-gptq` that is needed to quantize the model. Instead, use python's `virtualenv` to resolve this issue. Don't worry about pytorch detecting CUDA GPU, it will do that if you run the required install command (see pytorch's website).
+ - The `auto-gptq` library requires CUDA (and RoCm for AMD GPUs) in order to run its quantization.
+ - The `optimum` library from huggingface has its own GPTQ function (have yet to test it out).
+     - Questions for implementation
+        - Can you finetune with `peft`?
+        - Can you run without GPU or use MPS from Apple Silicon?
 
 
 ### References

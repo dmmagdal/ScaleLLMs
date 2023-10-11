@@ -12,6 +12,7 @@ Description: This is a quick example of finetuning the Falcon 7B model with QLor
 	 - Flan-T5 (let's see how the ChatGPT killer really performs)
  - As of writing this (10/07/2023), I have been able to download the `bitsandbytes` module required for quantizing models. However, upon trying to run the programs, I get an error from `bitsandbytes` regarding the module not being able to locate the CUDA version. Going to GitHub, I've seen this is an issue with other users and the repo owner has marked such issues as `[CUDA_SETUP]` and `[low-priority]`. I have low expectations as to whether this will be updated anytime soon.
 	 - I am considering alternatives such as GGML/GGUL and GPTQ for quantizing the models. Actual finetuning may be different as a result but I have to get to that part next.
+	 - UPDATE 10/10/2023: Using python's `virtualenv` allowed me to get around this issue. I am now able to run `bitsandbytes` to peform the model quantization. I still need to figure out the finetuning part with `peft`. 
 
 
 ### References

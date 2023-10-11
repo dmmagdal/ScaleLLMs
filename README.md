@@ -21,9 +21,32 @@ Description: This repo aims to look at different techniques that can allow for L
 		 - Dual Intel Xeon CPUs
 		 - 64 GB RAM
 		 - 3x Nvidia Tesla P100 (16 GB VRAM each)
+ - Personal environment notes (software setup):
+	 - Conda's conda-forge library does not currently have the correct version of `auto-gptq` available
+	 - In addition, the conda-forge version of `bitsandbytes` may not be correct or up to date (was having an error where upon loading the module, `bitsandbytes` could not find CUDA)
+	 - To counter this, use python's `virtualenv` package ([documentation here](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/))
+		 - install: `pip install virtualenv`
+		 - create new virtual environment: `python3 -m venv env-name`
+		 - activate virtual environment: `source env-name/bin/activate`
+		 - deactivate virtual environment: `deactivate`
+		 - install packages to virtual environment (while environment is active): `pip install package-name`
+		 - would be best to deactivate any/all existing conda enviornments before doing anything in python's virtualenv
+	 - Install `pytorch` (see [website](https://pytorch.org/) for most up to date commands):
+		 - Linux (CUDA 11.8):
+			 - `conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia`
+			 - `pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118`
+		 - MacOS (MPS acceleration on MacOS 12.3+): 
+			 - `conda install pytorch::pytorch torchvision torchaudio -c pytorch`
+			 - `pip install torch torchvision torchaudio`
+		 - Windows (CUDA 11.8):
+			 - `conda install pytorch torchvision torchaudio pytorch-cuda=11.8 -c pytorch -c nvidia`
+			 - `pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118`
+	 - To alleviate confusion between conda and `virtualenv`:
+		 - Use `requirements.txt` to initialize the virtual environment.
+		 - Use `environment.yaml` to initialize the conda environment.
  - Techniques to be explored in this repo:
 	 - QLora (with `bitsandbytes` library in addition to huggingface's `transformers` & `peft`)
-	 - GPTQ
+	 - GPTQ (with `auto-gptq` and/or `optimum` libraries in addition to huggingface's `transformers` & `peft`)
 	 - GGML/GGUF
  - QLora
 	 - `bitsandbytes` requires CUDA GPU to do quantization
@@ -42,11 +65,13 @@ Description: This repo aims to look at different techniques that can allow for L
 		 - easily serializable
 	 - `auto-gptq` shortcomings:
 		 - requires a calibration dataset
-		 - works for language models only (at the time of writing this 10/2020)
+		 - works for language models only (at the time of writing this 10/10/2023)
  - GGML/GGUF
- - Can finetune quantized models with `peft` library from huggingface (for GPTQ and QLora quantization)
-	 - PEFT stands for "parameter efficient finetuning"
-	 - Training on quantized models is not possible
+	 - Models quantized with GGML/GGUF [do NOT currently support any form of finetuning](https://github.com/ggerganov/ggml/issues/8) (and are therefore limited to just inference).
+ - Can finetune quantized models with `peft` library from huggingface (for GPTQ and QLora quantization).
+	 - PEFT stands for "parameter efficient finetuning".
+	 - Training on quantized models is not possible.
+
 
 ### References
 
