@@ -27,6 +27,7 @@ Description: This is a quick example of finetuning the Falcon 7B model with QLor
 	 - [Peft GitHub](https://github.com/huggingface/peft)
 	 - [Huggingface blog](https://huggingface.co/blog/4bit-transformers-bitsandbytes)
      - [Huggingface blog on peft](https://huggingface.co/blog/peft)
+	 - [Link to QLora paper](https://huggingface.co/papers/2305.14314) on Huggingface
  - tutorial
 	 - [GPT-Neo Video](https://www.youtube.com/watch?v=NRVaRXDoI3g)
 	 - [GPT-Neo Collab](https://colab.research.google.com/drive/1Vvju5kOyBsDr7RX_YAvp6ZsSOoSMjhKD?usp=sharing#scrollTo=E0Nl5mWL0k2T)
