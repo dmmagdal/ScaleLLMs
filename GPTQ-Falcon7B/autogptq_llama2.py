@@ -152,7 +152,8 @@ def main():
 	model = AutoModelForCausalLM.from_pretrained(
 		model_id,
 		quantization_config=quantization_config_loading, 
-		device_map="auto",
+		# device_map="auto",
+		device_map={"": 0},		# use on my Dell Desktop
 	)
 
 	print(model.config.quantization_config.to_dict())

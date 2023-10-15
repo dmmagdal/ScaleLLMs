@@ -11,6 +11,9 @@ Description: This is a quick example of finetuning the Falcon 7B model with GPTQ
      - Questions for implementation
         - Can you finetune with `peft`?
         - Can you run without GPU or use MPS from Apple Silicon?
+ - Testing
+     - Windows (my Dell XPS Desktop)
+         - Set the `device_map={"":0}` instead of `device_map="auto"` (from the collab notebook) for the `TheBloke/Llama-2-7b-Chat-GPTQ` model `from_pretrained()` arguments in order to be able to run the code on the machine. When using `device_map="auto"`, I see an error similar to the one described in this [issue](https://github.com/tloen/alpaca-lora/issues/368). Refer to the documentation [here](https://huggingface.co/docs/transformers/main_classes/model#large-model-loading) and [here](https://huggingface.co/docs/transformers/main_classes/model#transformers.PreTrainedModel.from_pretrained) on how using `device_map` works and how it relates to loading large models. Long story short, using `"auto"` may load parts of the model to CPU/RAM from the GPU and the 8-bit values/tensors may not be supported by CPU (this may explain why the libraries like `auto-gptq` and `bitsandbytes` rely on GPUs and have no CPU only counterparts).
 
 
 ### References
@@ -27,7 +30,7 @@ Description: This is a quick example of finetuning the Falcon 7B model with GPTQ
      - [Huggingface blog on peft](https://huggingface.co/blog/peft)
  - tutorial
 	 - [Llama 2 7B Video](https://www.youtube.com/watch?v=RlCQTtIYajM&ab_channel=1littlecoder)
-	 - [Llama 2 Collab](hhttps://colab.research.google.com/drive/1_TIrmuKOFhuRRiTWN94iLKUFu6ZX4ceb?usp=sharing)
+	 - [Llama 2 Collab](https://colab.research.google.com/drive/1_TIrmuKOFhuRRiTWN94iLKUFu6ZX4ceb?usp=sharing)
 	 - [Medium article](https://medium.com/@jain.sm/quantizing-llms-using-auto-gptq-in-colab-59e20b125e62) on Quantizing LLMs using auto gptq in colab
      - [Towards AI blog](owardsai.net/p/machine-learning/gptq-quantization-on-a-llama-2-7b-fine-tuned-model-with-huggingface) on GPTQ Quantization on a Llama 2 7B Fine-Tuned Model With HuggingFace
  - model
