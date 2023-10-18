@@ -31,8 +31,9 @@ def main():
 	model = AutoModelForCausalLM.from_pretrained(
 		model_id,
 		device_map="auto",					# note that you will need GPU to quantize the model.
+		# device_map={"": 0},
 		trust_remote_code=True,
-		torch_dtype=torch.bfloat16,
+		torch_dtype=torch.float16,
 	)
 	
 	quantizer = GPTQQuantizer(
@@ -56,7 +57,8 @@ def main():
 	text = "Hello my name is"
 	inputs = tokenizer(text, return_tensors="pt").to(0)
 
-	out = model.generate(**inputs)
+	# out = model.generate(**inputs)
+	out = quant_model.generate(**inputs)
 	print(tokenizer.decode(out[0], skip_special_tokens=True))
 
 	###################################################################
@@ -102,17 +104,20 @@ def main():
 	# text. Before that, we can inspect the model to make sure it has 
 	# loaded a quantized model. As you can see, linear layers have been
 	# modified to QuantLinear modules from auto-gptq library.
-	print(model)
+	# print(model)
+	print(quantized_model)
 
 	# Furthermore, we can see that from the quantization config that we
 	# are using exllama kernel (disable_exllama = False). Note that it 
 	# only works with 4-bit model.
-	print(model.config.quantization_config.to_dict())
+	# print(model.config.quantization_config.to_dict())
+	# print(quantized_model.config.quantization_config.to_dict())
 
 	text = "Hello my name is"
 	inputs = tokenizer(text, return_tensors="pt").to(0)
 
-	out = model.generate(**inputs, max_new_tokens=50)
+	# out = model.generate(**inputs, max_new_tokens=50)
+	out = quantized_model.generate(**inputs, max_new_tokens=50)
 	print(tokenizer.decode(out[0], skip_special_tokens=True))
 
 	###################################################################
@@ -125,14 +130,21 @@ def main():
 	# object with disable_exllama=True. This will overwrite the value 
 	# stored in the config of the model.
 	model_id = "TheBloke/Llama-2-7b-Chat-GPTQ"
-	quantization_config_loading = GPTQConfig(
+	quantizer = GPTQQuantizer(
 		bits=4, 
+		dataset="c4",
+		# block_name_to_quantize="model.decoder.layers",
+		model_seqlen=2048,
 		disable_exllama=True,
 	)
 	model = AutoModelForCausalLM.from_pretrained(
-		model_id,
-		quantization_config=quantization_config_loading, 
+		model_id, 
 		device_map="auto",
+		torch_dtype=torch.float16,
+	)
+
+	model = quantizer.quantize_model(
+		model, tokenizer
 	)
 
 	print(model.config.quantization_config.to_dict())
