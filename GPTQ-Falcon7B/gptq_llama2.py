@@ -103,8 +103,7 @@ def main():
 	# Once tokenizer and model has been loaded, let's generate some 
 	# text. Before that, we can inspect the model to make sure it has 
 	# loaded a quantized model. As you can see, linear layers have been
-	# modified to QuantLinear modules from auto-gptq library.
-	# print(model)
+	# modified to QuantLinear modules from optimum.
 	print(quantized_model)
 
 	# Furthermore, we can see that from the quantization config that we
