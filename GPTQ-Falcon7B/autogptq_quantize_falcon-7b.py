@@ -29,7 +29,8 @@ def main():
 	model = AutoModelForCausalLM.from_pretrained(
 		model_id,
 		quantization_config=gptq_config,	# quantizes the model with the above config
-		device_map="auto",					# note that you will need GPU to quantize the model.
+		device_map="auto",				# note that you will need GPU to quantize the model.
+		# device_map={"": 0},
 		trust_remote_code=True,
 	)
 
@@ -48,6 +49,12 @@ def main():
 
 	out = model.generate(**inputs)
 	print(tokenizer.decode(out[0], skip_special_tokens=True))
+	
+	###################################################################
+	# Save model locally
+	###################################################################
+	model.save("./autogptq_quantized_4bit_falcon-7b")
+	tokenizer.save("./autogptq_quantized_4bit_falcon-7b")
 
 	###################################################################
 	# Upload the model
@@ -74,6 +81,7 @@ def main():
 	# The integration should work with most of these models out of the 
 	# box (to confirm and test).
 
+	exit()
 	# Below we will load a llama 7b quantized in 4bit.
 	model_id = "TheBloke/Llama-2-7b-Chat-GPTQ"
 	model = AutoModelForCausalLM.from_pretrained(

@@ -16,6 +16,12 @@ Description: This is a quick example of finetuning the Falcon 7B model with GPTQ
 	 - Windows (my Dell XPS Desktop)
 		 - Set the `device_map={"":0}` instead of `device_map="auto"` (from the collab notebook) for the `TheBloke/Llama-2-7b-Chat-GPTQ` model `from_pretrained()` arguments in order to be able to run the code on the machine. When using `device_map="auto"`, I see an error similar to the one described in this [issue](https://github.com/tloen/alpaca-lora/issues/368). Refer to the documentation [here](https://huggingface.co/docs/transformers/main_classes/model#large-model-loading) and [here](https://huggingface.co/docs/transformers/main_classes/model#transformers.PreTrainedModel.from_pretrained) on how using `device_map` works and how it relates to loading large models. Long story short, using `"auto"` may load parts of the model to CPU/RAM from the GPU and the 8-bit values/tensors may not be supported by CPU (this may explain why the libraries like `auto-gptq` and `bitsandbytes` rely on GPUs and have no CPU only counterparts).
          - Attempting to use huggingface's `optimum` module does kind of work to quantize a model (the `gptq_llama2.py` script is able to quantize the 125M OPT model from Facebook/MetaAI but had issues quantizing Llama 2 with the config used). Given my current experience, I think it's going to be easier to use `auto-gptq` on top of `optimum` instead of just `optimum`.
+ - Quantization
+	 - Falcon 7B
+		 - Programs
+			 - `autogptq_quantize_falcon-7b.py`
+		 - Results/Notes
+			 - Was unable to quantize falcon 7b from `tiiuae/falcon-7b` on my Dell XPS Desktop. Ran into CUDA OOM issue at around 22% quantization.
 
 
 ### References
