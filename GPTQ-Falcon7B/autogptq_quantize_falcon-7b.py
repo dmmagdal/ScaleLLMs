@@ -17,7 +17,10 @@ def main():
 
 	# Define model for download and the (auto) gptq config for the
 	# quantization step.
-	model_id = "tiiuae/falcon-7b"
+	model_id = "tiiuae/falcon-7b"							# "original" version of raw falcon-7b
+	# model_id = "tiiuae/falcon-7b-instruct"					# "original" version of raw instruct falcon-7b
+	# model_id = "vilsonrodrigues/falcon-7b-sharded"			# resharded version of raw falcon-7b for low RAM environments
+	# model_id = "vilsonrodrigues/falcon-7b-instruct-sharded"	# resharded version of raw instruct falcon-7b for low RAM environments
 	gptq_config = GPTQConfig(
 		bits=4,						# the number of bits to quantize to, supported numbers are (2, 3, 4, 8).
 		dataset="c4",				# the dataset used for quantization. You can provide your own dataset in a list of string or just use the original datasets used in GPTQ paper [‘wikitext2’,‘c4’,‘c4-new’,‘ptb’,‘ptb-new’]
