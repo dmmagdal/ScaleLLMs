@@ -14,7 +14,6 @@ def main():
 	###################################################################
 	# Load the model
 	###################################################################
-
 	# Define model for download and the (auto) gptq config for the
 	# quantization step.
 	model_id = "tiiuae/falcon-7b"							# "original" version of raw falcon-7b
@@ -63,7 +62,6 @@ def main():
 	###################################################################
 	# Load the quantized model
 	###################################################################
-
 	# You can load models that have been quantized using the auto-gptq 
 	# library out of the box from the 🤗 Hub directly using 
 	# from_pretrained method. Make sure that the model on the Hub have 
@@ -75,9 +73,8 @@ def main():
 	# The integration should work with most of these models out of the 
 	# box (to confirm and test).
 
-	exit()
 	# Below we will load a llama 7b quantized in 4bit.
-	model_id = "TheBloke/Llama-2-7b-Chat-GPTQ"
+	# model_id = "TheBloke/Llama-2-7b-Chat-GPTQ"
 	model_id = "./autogptq_quantized_4bit_falcon-7b"
 	model = AutoModelForCausalLM.from_pretrained(
 		model_id, 
