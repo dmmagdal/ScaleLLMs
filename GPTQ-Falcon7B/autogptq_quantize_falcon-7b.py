@@ -73,8 +73,8 @@ def main():
 	# The integration should work with most of these models out of the 
 	# box (to confirm and test).
 
-	# Below we will load a llama 7b quantized in 4bit.
-	# model_id = "TheBloke/Llama-2-7b-Chat-GPTQ"
+	# Below we will load a falcon 7b quantized in 4bit.
+	# model_id = "TheBloke/Llama-2-7b-Chat-GPTQ"	# Old (in case quantization process didnt work, I would have used this guy's copy).
 	model_id = "./autogptq_quantized_4bit_falcon-7b"
 	model = AutoModelForCausalLM.from_pretrained(
 		model_id, 

@@ -19,7 +19,6 @@ def main():
 	###################################################################
 	# Load the quantized model
 	###################################################################
-
 	# You can load models that have been quantized using the auto-gptq 
 	# library out of the box from the 🤗 Hub directly using 
 	# from_pretrained method. Make sure that the model on the Hub have 
@@ -33,39 +32,25 @@ def main():
 
 	# Check for local copy of model, otherwise load from huggingface 
 	# hub.
-	model_id = "falcon-7b-gptq-4bit"
-	local_path = "./autogptq_quantized_4bit_falcon-7b"
+	model_id = "dmmagdal/falcon-7b-gptq-4bit"			# model id to load. Defaults to huggingface hub ID.
+	local_path = "./autogptq_quantized_4bit_falcon-7b"	# local path to quantized model if running autogptq_quantize_falcon-7b.py program.
+	local_files_only = False							# default is "False" in from_pretrained() function.
 	if os.path.exists(local_path):
-		tokenizer = AutoTokenizer.from_pretrained(
-			local_path,
-			local_files_only=True
-		)
-		model = AutoModelForCausalLM.from_pretrained(
-			local_path,
-			local_files_only=True,
-			device_path="auto",
-		)
-	else:
-		quantization_config = GPTQConfig(
-			bits=4,
-			disable_exllama=True,
-		)
-		tokenizer = AutoTokenizer.from_pretrained(
-			model_id,
-		)
-		model = AutoModelForCausalLM.from_pretrained(
-			model_id,
-			quantization_config=quantization_config,
-			device_map="auto",
-		)
+		# Override model id and set local_files_only argument to True.
+		model_id = local_path
+		local_files_only = True
 
-	# Below we will load a llama 7b quantized in 4bit.
-	# model_id = "falcon-7b-gptq-4bit"
-	# model = AutoModelForCausalLM.from_pretrained(
-	# 	model_id, 
-	# 	device_map="auto",
-	# )
-	# tokenizer = AutoTokenizer.from_pretrained(model_id)
+	# Below we will load the falcon-7b model quantized in 4bit from out
+	# last script (autogptq_quantize_falcon-7b.py).
+	tokenizer = AutoTokenizer.from_pretrained(
+		model_id,
+		local_files_only=local_files_only,
+	)
+	model = AutoModelForCausalLM.from_pretrained(
+		model_id,
+		local_files_only=local_files_only,
+		device_map="auto",
+	)	# dont call quantization_config here as we are loading a model already quantized (in the same config).
 
 	# Once tokenizer and model has been loaded, let's generate some 
 	# text. Before that, we can inspect the model to make sure it has 
@@ -87,13 +72,12 @@ def main():
 	###################################################################
 	# Train/Finetune the quantized model
 	###################################################################
-
-	# Let's train the llama-2 model using PEFT library from Hugging 
+	# Let's train the falcon 7b model using PEFT library from Hugging 
 	# Face 🤗. We disable the exllama kernel because training with 
 	# exllama kernel is unstable. To do that, we pass a GPTQConfig 
 	# object with disable_exllama=True. This will overwrite the value 
 	# stored in the config of the model.
-	model_id = "TheBloke/Llama-2-7b-Chat-GPTQ"
+	# model_id = "TheBloke/Llama-2-7b-Chat-GPTQ"
 	quantization_config_loading = GPTQConfig(
 		bits=4, 
 		disable_exllama=True,
@@ -101,8 +85,8 @@ def main():
 	model = AutoModelForCausalLM.from_pretrained(
 		model_id,
 		quantization_config=quantization_config_loading, 
-		# device_map="auto",
-		device_map={"": 0},		# use on my Dell Desktop
+		device_map="auto",
+		# device_map={"": 0},		# use on my Dell Desktop
 	)
 
 	print(model.config.quantization_config.to_dict())
@@ -133,9 +117,6 @@ def main():
 		lambda samples: tokenizer(samples["quote"]), 
 		batched=True
 	)
-
-	# needed for llama 2 tokenizer
-	# tokenizer.pad_token = tokenizer.eos_token
 
 	# Initialize trainer and train the model.
 	trainer = Trainer(
