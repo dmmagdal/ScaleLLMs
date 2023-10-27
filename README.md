@@ -49,16 +49,16 @@ Description: This repo aims to look at different techniques that can allow for L
 	 - GPTQ (with `auto-gptq` and/or `optimum` libraries in addition to huggingface's `transformers` & `peft`)
 	 - GGML/GGUF
  - QLora
-	 - `bitsandbytes` requires CUDA GPU to do quantization
+	 - `bitsandbytes` requires CUDA GPU to do quantization.
 	 - `bitsandbytes` benefits:
 		 - Can peform "zero-shot quantization" (does not require input data to calibrate the quantized model)
 		 - Can quantize any model out of the box as long as it contains `torch.nn.Linear` modules 
 		 - Quantization is peformed on model load, no need to run any post-processing or preparation step
 		 - Zero peformance degreation when loading adapters and can also merge adapters in a dequantized model
 	 - `bitsandbytes` shortcomings:
-		 - 4-bit quantization not serializable
+		 - 4-bit quantization not serializable.
  - GPTQs
-	 - `auto-gptq` requires CUDA or RoCM (AMD) GPU to do quantization
+	 - `auto-gptq` requires CUDA or RoCM (AMD) GPU to do quantization.
 	 - `auto-gptq` benefits:
 		 - fast for text generation
 		 - n-bit support
@@ -68,7 +68,7 @@ Description: This repo aims to look at different techniques that can allow for L
 		 - works for language models only (at the time of writing this 10/10/2023)
  - GGML/GGUF
 	 - Models quantized with GGML/GGUF [do NOT currently support any form of finetuning](https://github.com/ggerganov/ggml/issues/8) (and are therefore limited to just inference).
- - Can finetune quantized models with `peft` library from huggingface (for GPTQ and QLora quantization).
+ - Can finetune quantized models with `peft` library from huggingface (for GPTQ and QLora quantization)
 	 - PEFT stands for "parameter efficient finetuning".
 	 - Training on quantized models is not possible.
  - Overall notes on my experience with quantization and finetuning
@@ -80,7 +80,7 @@ Description: This repo aims to look at different techniques that can allow for L
 			 - Kaggle free tier has 29GB RAM and 2x 16GB VRAM (Nvidia T4).
 	 - Why learn how to quantize a model when others are already doing it?
 		 - It's good to know how things work.
-		 - You have more control over your models (other people's models/copies can be faulty, corrupted, or censored).
+		 - You have more control over your models (other people's models/copies can be faulty, corrupted, tampered, or censored).
 	 - What should you do if you cannot quantize a model (ie package error messages, insufficient hardware, etc)?
 		 - Wait. Waiting for package updates and tutorials gives you the benefit of having someone else go through the trouble of debugging or handling your specific use case.
 		 - File a bug. In the case of errors from running your quantization + finetuning, there are probably a lot of other people who have encountered the same bug on their system. Keeping up to date or subscribed to those posts may give you either a work around or a note that your issue is going to be resolved in the next update.
