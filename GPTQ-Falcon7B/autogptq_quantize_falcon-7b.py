@@ -23,8 +23,9 @@ def main():
 	# model_id = "vilsonrodrigues/falcon-7b-instruct-sharded"	# resharded version of raw instruct falcon-7b for low RAM environments
 	gptq_config = GPTQConfig(
 		bits=4,						# the number of bits to quantize to, supported numbers are (2, 3, 4, 8).
-		dataset="c4",				# the dataset used for quantization. You can provide your own dataset in a list of string or just use the original datasets used in GPTQ paper [‘wikitext2’,‘c4’,‘c4-new’,‘ptb’,‘ptb-new’]
+		dataset="c4",				# the dataset used for quantization. You can provide your own dataset in a list of string or just use the original datasets used in GPTQ paper [‘wikitext2’,‘c4’,‘c4-new’,‘ptb’,‘ptb-new’].
 		desc_act=False,				# whether to quantize columns in order of decreasing activation size. Setting it to False can significantly speed up inference but the perplexity may become slightly worse. Also known as act-order.
+		disable_exllama=True,		# Whether to use exllama backend. Only works with bits = 4 (seemingly required for falcon model but not sure why).
 	)
 
 	# Initialize model tokenizer and the model.
@@ -41,7 +42,7 @@ def main():
 	# checking the attributes of the linear layers, they should contain
 	# qweight and qzeros attributes that should be in torch.int32 
 	# dtype.
-	print(model.model.decoder.layers[0].self_attn.q_proj.__dict__)
+	# print(model.model.decoder.layers[0].self_attn.q_proj.__dict__)
 
 	# Now let's perform an inference on the quantized model. Use the 
 	# same API as transformers!
@@ -56,18 +57,8 @@ def main():
 	###################################################################
 	# Save model locally
 	###################################################################
-	model.save("./autogptq_quantized_4bit_falcon-7b")
-	tokenizer.save("./autogptq_quantized_4bit_falcon-7b")
-
-	###################################################################
-	# Upload the model
-	###################################################################
-
-	# After quantizing the model, it can be used out-of-the-box for 
-	# inference or you can push the quantized weights on the 🤗 Hub to 
-	# share your quantized model with the community.
-	model.push_to_hub("falcon-7b-gptq-4bit")
-	tokenizer.push_to_hub("falcon-7b-gptq-4bit")
+	model.save_pretrained("./autogptq_quantized_4bit_falcon-7b")
+	tokenizer.save_pretrained("./autogptq_quantized_4bit_falcon-7b")
 
 	###################################################################
 	# Load the quantized model
@@ -87,6 +78,7 @@ def main():
 	exit()
 	# Below we will load a llama 7b quantized in 4bit.
 	model_id = "TheBloke/Llama-2-7b-Chat-GPTQ"
+	model_id = "./autogptq_quantized_4bit_falcon-7b"
 	model = AutoModelForCausalLM.from_pretrained(
 		model_id, 
 		device_map="auto",
