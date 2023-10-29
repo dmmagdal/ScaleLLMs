@@ -1,5 +1,9 @@
 # finetune_falcon.py
 # Load the Falcon 7B model and finetune it with QLora.
+# Source 1: https://colab.research.google.com/drive/
+#	1BiQiw31DT7-cDp1-0ySXvvhzqomTdI-o?usp=sharing
+# Source 2: https://medium.com/@amodwrites/a-definitive-guide-to-
+#	qlora-fine-tuning-falcon-7b-with-peft-78f500a1f337
 # Windows/MacOS/Linux
 
 
@@ -32,7 +36,8 @@ def main():
 	model = AutoModelForCausalLM.from_pretrained(
 		model_id,
 		quantization_config=bnb_config,			# quantizes the model with the above config
-		device_map={"": 0},						# note that you will need GPU to quantize the model.
+		# device_map={"": 0},						# note that you will need GPU to quantize the model.
+		device_map="auto",
 		trust_remote_code=True,
 	)
 
@@ -47,7 +52,8 @@ def main():
 		r=64, 								# the rank of the update matrices. Lower rank results in smaller update matrices with fewer trainable parameters
 		lora_alpha=16, 						# LoRA scaling factor
 		target_modules=[
-			"query_key_value", "dense", "dense_h_to_4h", "dense_4h_to_h"
+			# "query_key_value", "dense", "dense_h_to_4h", "dense_4h_to_h"	# from first example source (causes TypeError: 'NoneType' object is not subscriptable).
+			"query_key_value",												# from second example source (no error).
 		], # the modules (for example, attention blocks) to apply the LoRA update matrices
 		lora_dropout=0.1, 					#
 		bias="none", 						# specifies if the bias parameters should be trained (can be "none", "all", or "lora_only")
@@ -61,7 +67,6 @@ def main():
 	###################################################################
 	# Load the dataset
 	###################################################################
-
 	# Using the English quotes dataset.
 	data = load_dataset("Abirate/english_quotes")
 	data = data.map(
@@ -72,7 +77,6 @@ def main():
 	###################################################################
 	# Train the model
 	###################################################################
-
 	# tokenizer.pad_token = tokenizer.eos_token
 	trainer = transformers.Trainer(
 		model=model,							# model
@@ -100,7 +104,6 @@ def main():
 	###################################################################
 	# Save and load the finetuned/quantized model
 	###################################################################
-
 	model_to_save = trainer.model.module if hasattr(trainer.model, 'module') else trainer.model  # Take care of distributed/parallel training
 	model_to_save.save_pretrained("results-model")
 
@@ -110,7 +113,6 @@ def main():
 	###################################################################
 	# Sample from the model
 	###################################################################
-
 	text = "Elon Musk "
 	device = "cuda:0"
 

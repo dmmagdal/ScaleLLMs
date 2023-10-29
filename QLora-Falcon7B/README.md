@@ -35,6 +35,7 @@ Description: This is a quick example of finetuning the Falcon 7B model with QLor
 	 - [Falcon-7B Collab](https://colab.research.google.com/drive/1BiQiw31DT7-cDp1-0ySXvvhzqomTdI-o?usp=sharing)
 	 - [Medium article](https://medium.com/@srishtinagu19/quantizing-falcon-7b-instruct-for-running-inference-on-colab-bd97066aa49d) to Quantize Falcon 7B Instruct for running inference on colab
 	 - [Medium article](https://vilsonrodrigues.medium.com/run-your-private-llm-falcon-7b-instruct-with-less-than-6gb-of-gpu-using-4-bit-quantization-ff1d4ffbabcc) to Run your private LLM: Falcon-7B-Instruct with less than 6GB of GPU using 4-bit quantization
+	 - [Medium article](https://medium.com/@amodwrites/a-definitive-guide-to-qlora-fine-tuning-falcon-7b-with-peft-78f500a1f337) on a definitive guide to QLora finetuning of falcon 7b with peft
  - model
 	 - [GPT-NeoX-20B](https://huggingface.co/EleutherAI/gpt-neox-20b)
 	 - [Falcon-7B](https://huggingface.co/tiiuae/falcon-7b)

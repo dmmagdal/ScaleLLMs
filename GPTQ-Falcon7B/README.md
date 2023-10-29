@@ -28,6 +28,7 @@ Description: This is a quick example of finetuning the Falcon 7B model with GPTQ
 			 - Was **able** to quantize falcon 7b from `tiiuae/falcon-7b` on my Darkstar GPU server. VRAM usage was around 14GB VRAM (so a 16GB card is very much recommended for 7B models). Actual RAM usage was around 7.5 GB but would still recommend using 16GB RAM. Be aware that the quantization process takes a while (around 1 hour 10 minutes).
 			 - Specifying `disable_exllama=True` in the `GPTQConfig` is a requirement for falcon. The default (`disable_exllama=False`) will result in an assertion error for the input features vs the group size part way through the quantization process (actual error is: `assert infeatures % self.group_size == 0`). According to the huggingface documentation, the `disable_exllama` argument in the `GPTQConfig` is for `Whether to use exllama backend. Only works with bits = 4`. As it turns out, I am quantizing falcon 7B with 4-bit quantization in the `autogptq_quantize_falcon-7b.py` script, so this does apply.
 			 - The resulting 4-bit quantized model in `autogptq_quantized_4bit_falcon-7b/` folder (and the tokenizer) comes out to around 3.8 GB on disk.
+ - Finetuning
 
 
 ### References
@@ -46,7 +47,8 @@ Description: This is a quick example of finetuning the Falcon 7B model with GPTQ
 	 - [Llama 2 7B Video](https://www.youtube.com/watch?v=RlCQTtIYajM&ab_channel=1littlecoder)
 	 - [Llama 2 Collab](https://colab.research.google.com/drive/1_TIrmuKOFhuRRiTWN94iLKUFu6ZX4ceb?usp=sharing)
 	 - [Medium article](https://medium.com/@jain.sm/quantizing-llms-using-auto-gptq-in-colab-59e20b125e62) on Quantizing LLMs using auto gptq in colab
-	 - [Towards AI blog](owardsai.net/p/machine-learning/gptq-quantization-on-a-llama-2-7b-fine-tuned-model-with-huggingface) on GPTQ Quantization on a Llama 2 7B Fine-Tuned Model With HuggingFace
+	 - [Towards AI blog](https://towardsai.net/p/machine-learning/gptq-quantization-on-a-llama-2-7b-fine-tuned-model-with-huggingface) on GPTQ Quantization on a Llama 2 7B Fine-Tuned Model With HuggingFace
+	 - [Medium article](https://medium.com/@amodwrites/a-definitive-guide-to-qlora-fine-tuning-falcon-7b-with-peft-78f500a1f337) on a definitive guide to QLora finetuning of falcon 7b with peft
  - model
 	 - [Llama 2 7B](https://huggingface.co/meta-llama/Llama-2-7b)
 	 - [Falcon-7B](https://huggingface.co/tiiuae/falcon-7b)

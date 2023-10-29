@@ -100,13 +100,16 @@ def main():
 	# Then, we need to convert the model into a peft model using 
 	# get_peft_model.
 	config = LoraConfig(
-		r=8,
+		r=16,								# use this rank value instead of 8 which was used in the llama 2 example,
 		lora_alpha=32,
-		target_modules=["k_proj","o_proj","q_proj","v_proj"],
+		target_modules=["query_key_value"],	# use this target module instead of these ["k_proj","o_proj","q_proj","v_proj"] which are for llama 2.
 		lora_dropout=0.05,
 		bias="none",
 		task_type="CAUSAL_LM"
 	)
+
+	# Specified in this example (https://medium.com/@amodwrites/a-definitive-guide-to-qlora-fine-tuning-falcon-7b-with-peft-78f500a1f337).
+	tokenizer.pad_token = tokenizer.eos_token
 
 	peft_model = get_peft_model(model, config)
 	peft_model.print_trainable_parameters()
