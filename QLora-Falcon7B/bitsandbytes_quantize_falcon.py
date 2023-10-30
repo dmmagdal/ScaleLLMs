@@ -51,8 +51,8 @@ def main():
 	model = AutoModelForCausalLM.from_pretrained(
 		model_id,
 		quantization_config=bnb_config,			# quantizes the model with the above config
-		device_map={"": 0},						# note that you will need GPU to quantize the model.
-		# device_map="auto",
+		# device_map={"": 0},						# note that you will need GPU to quantize the model.
+		device_map="auto",
 		trust_remote_code=True,
 	)
 	
