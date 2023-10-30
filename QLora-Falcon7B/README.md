@@ -13,6 +13,25 @@ Description: This is a quick example of finetuning the Falcon 7B model with QLor
  - As of writing this (10/07/2023), I have been able to download the `bitsandbytes` module required for quantizing models. However, upon trying to run the programs, I get an error from `bitsandbytes` regarding the module not being able to locate the CUDA version. Going to GitHub, I've seen this is an issue with other users and the repo owner has marked such issues as `[CUDA_SETUP]` and `[low-priority]`. I have low expectations as to whether this will be updated anytime soon.
 	 - I am considering alternatives such as GGML/GGUL and GPTQ for quantizing the models. Actual finetuning may be different as a result but I have to get to that part next.
 	 - UPDATE 10/10/2023: Using python's `virtualenv` allowed me to get around this issue. I am now able to run `bitsandbytes` to peform the model quantization. I still need to figure out the finetuning part with `peft`. 
+ - Testing
+ - Quantization
+ - Finetuning
+ - Exporting to ONNX
+	 - Created and ran the `export_onnx_falcon.py` script to test if I can export falcon 7b (4-bit quantized with `bitsandbytes`) to ONNX based one the code found on this [blog post](https://huggingface.co/blog/convert-transformers-to-onnx). The script takes only the quantized model into consideration, **not** a quantized model that's been finetuned with `peft`.
+	 - 10/30/2023: Ran the first test of the export script. For "mid-level" export with `transformers.onnx`, the model was downloaded and quantized but saw the following error:
+```
+KeyError: "falcon is not supported yet. Only ['albert', 'bart', 'beit', 'bert', 'big-bird', 'bigbird-pegasus', 'blenderbot', 'blenderbot-small', 'bloom', 'camembert', 'clip', 'codegen', 'convbert', 'convnext', 'data2vec-text', 'data2vec-vision', 'deberta', 'deberta-v2', 'deit', 'detr', 'distilbert', 'electra', 'flaubert', 'gpt2', 'gptj', 'gpt-neo', 'groupvit', 'ibert', 'imagegpt', 'layoutlm', 'layoutlmv3', 'levit', 'longt5', 'longformer', 'marian', 'mbart', 'mobilebert', 'mobilenet-v1', 'mobilenet-v2', 'mobilevit', 'mt5', 'm2m-100', 'owlvit', 'perceiver', 'poolformer', 'rembert', 'resnet', 'roberta', 'roformer', 'segformer', 'squeezebert', 'swin', 't5', 'vision-encoder-decoder', 'vit', 'whisper', 'xlm', 'xlm-roberta', 'yolos'] are supported. If you want to support falcon please propose a PR or open up an issue."
+```
+	 - 10/30/2023 (continued): It seems that the falcon model (along with most of the other llms like flan-t5, llama 2, vicuna, mistral, zephyr, etc) are not yet supported with this method. For "low-level" export with `torch.onnx`, the model was downloaded and quantized but saw the following error:
+```
+batch_size, num_heads, kv_length, head_dim = past_key_value[0][0].shape
+ValueError: not enough values to unpack (expected 4, got 0)
+```
+	 - 10/30/2023 (continued): This is much more promising than the others. For "high level" export iwth `optimum.onnxruntime`, the model was downloaded and quantized but saw the following error:
+```
+ValueError: Trying to export a falcon model, that is a custom or unsupported architecture for the task text-generation-with-past, but no custom onnx configuration was passed as `custom_onnx_configs`. Please refer to https://huggingface.co/docs/optimum/main/en/exporters/onnx/usage_guides/export_a_model#custom-export-of-transformers-models for an example on how to export custom models. For the task text-generation-with-past, the Optimum ONNX exporter supports natively the architectures: ['bart', 'blenderbot', 'blenderbot_small', 'bloom', 'codegen', 'gpt2', 'gpt_bigcode', 'gptj', 'gpt_neo', 'gpt_neox', 'marian', 'mbart', 'mpt', 'opt', 'llama', 'pegasus'].
+```
+	 - 10/30/2023 (continued): It is another case of the falcon model not being a part of the list of currently supported models.
 
 
 ### References
@@ -28,6 +47,8 @@ Description: This is a quick example of finetuning the Falcon 7B model with QLor
 	 - [Huggingface blog](https://huggingface.co/blog/4bit-transformers-bitsandbytes)
      - [Huggingface blog on peft](https://huggingface.co/blog/peft)
 	 - [Link to QLora paper](https://huggingface.co/papers/2305.14314) on Huggingface
+	 - [Optimum inference with ONNX Runtime](https://huggingface.co/docs/optimum/v1.2.1/en/onnxruntime/modeling_ort) on Huggingface
+	 - [Huggingface blog on convert transformers to onnx with optimum](https://huggingface.co/blog/convert-transformers-to-onnx)
  - tutorial
 	 - [GPT-Neo Video](https://www.youtube.com/watch?v=NRVaRXDoI3g)
 	 - [GPT-Neo Collab](https://colab.research.google.com/drive/1Vvju5kOyBsDr7RX_YAvp6ZsSOoSMjhKD?usp=sharing#scrollTo=E0Nl5mWL0k2T)

@@ -1,9 +1,6 @@
-# finetune_falcon.py
-# Load the Falcon 7B model and finetune it with QLora.
-# Source 1: https://colab.research.google.com/drive/
-#	1BiQiw31DT7-cDp1-0ySXvvhzqomTdI-o?usp=sharing
-# Source 2: https://medium.com/@amodwrites/a-definitive-guide-to-
-#	qlora-fine-tuning-falcon-7b-with-peft-78f500a1f337
+# bitsandbytes_quantize_falcon.py
+# Load the (quantized) Falcon 7B model and finetune it with 
+# bitsandbytes.
 # Windows/MacOS/Linux
 
 
@@ -21,23 +18,14 @@ def main():
 	###################################################################
 	# Load the model
 	###################################################################
-	# Define model for download and the bitsandbytes config for the
-	# quantization step.
-	model_id = "tiiuae/falcon-7b"				# Note that the target_module specified below in LoraConfig will only work with this model
-	bnb_config = BitsAndBytesConfig(
-		load_in_4bit=True,						# enable 4bit quantization by replacing the linear layers with fp4/nf4 layers from bitsandbytes
-		bnb_4bit_quant_type='nf4',				# sets the quantization data type in the bnb.nn.Linear4Bit layers (either fp4 or np4)
-		bnb_4bit_compute_dtype=torch.bfloat16,	# sets the computational type which might be different than the input type
-	) # Note that np4 stands for normal point 4 bit 
-
-	# Initialize model tokenizer and the model.
+	model_id = './bitsandbytes_quantized_4bit_falcon-7b'
 	tokenizer = AutoTokenizer.from_pretrained(model_id)
 	model = AutoModelForCausalLM.from_pretrained(
 		model_id,
-		quantization_config=bnb_config,			# quantizes the model with the above config
+		# quantization_config=bnb_config,			# quantizes the model with the above config
 		# device_map={"": 0},						# note that you will need GPU to quantize the model.
 		device_map="auto",
-		trust_remote_code=True,
+		# trust_remote_code=True,
 	)
 
 	# We have to apply some preprocessing to the model to prepare it 
@@ -103,11 +91,11 @@ def main():
 	###################################################################
 	# Save and load the finetuned/quantized model
 	###################################################################
-	model_to_save = trainer.model.module if hasattr(trainer.model, 'module') else trainer.model # Take care of distributed/parallel training
-	model_to_save.save_pretrained("results-model")												# Saves adapter layers, not whole model.
+	model_to_save = trainer.model.module if hasattr(trainer.model, 'module') else trainer.model  # Take care of distributed/parallel training
+	model_to_save.save_pretrained("results-model")
 
-	lora_config = LoraConfig.from_pretrained('results-model')									# Load adapter config from save location
-	model = get_peft_model(model, lora_config)													# Load (peft) model from model and the loaded adapter config
+	lora_config = LoraConfig.from_pretrained('results-model')
+	model = get_peft_model(model, lora_config)
 
 	###################################################################
 	# Sample from the model
@@ -118,9 +106,6 @@ def main():
 	inputs = tokenizer(text, return_tensors="pt").to(device)
 	outputs = model.generate(**inputs, max_new_tokens=20)
 	print(tokenizer.decode(outputs[0], skip_special_tokens=True))
-
-	# Exit the program.
-	exit(0)
 
 
 def print_trainable_parameters(model):
