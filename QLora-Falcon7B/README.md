@@ -35,6 +35,7 @@ Description: This is a quick example of finetuning the Falcon 7B model with QLor
 		 - Results/Notes
 			 - Was able to successfully run both scripts to completion.
 			 - `bitsandbytes_finetune_falcon.py` uses an 8-bit quantized version of the model that was created and saved locally by `bitsandbytes_quantize_falcon.py` while `finetune_falcon.py` uses a 4-bit quantized version of the model it creats itself (it cannot save it because that is not yet supported).
+			- For the `bitsandbytes_finetune_falcon.py`` script (8-bit quantization), the VRAM usage was around 26.1GB VRAM (so a 36 to 48GB card is very much recommended for 7B models; it may be prudent to acquire a few cards for this process actually). Actual RAM usage was around 7.4GB but would still recommend using 16GB RAM. The quantization process (running the script) can take a long time depnending on the number of steps/epochs (100 steps took around 20 minutes).
 			 - The resulting adapter model in `results-model/` (or `8bit-falcon7b-results-model/` if using `bitsandbytes_finetune_falcon.py`) folder (and the tokenizer) comes out to around 73 MB on disk.
  - Exporting to ONNX
 	 - Created and ran the `export_onnx_falcon.py` script to test if I can export falcon 7b (4-bit quantized with `bitsandbytes`) to ONNX based one the code found on this [blog post](https://huggingface.co/blog/convert-transformers-to-onnx). The script takes only the quantized model into consideration, **not** a quantized model that's been finetuned with `peft`.
