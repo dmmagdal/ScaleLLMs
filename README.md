@@ -54,9 +54,9 @@ Description: This repo aims to look at different techniques that can allow for L
 		 - Can peform "zero-shot quantization" (does not require input data to calibrate the quantized model)
 		 - Can quantize any model out of the box as long as it contains `torch.nn.Linear` modules 
 		 - Quantization is peformed on model load, no need to run any post-processing or preparation step
-		 - Zero peformance degreation when loading adapters and can also merge adapters in a dequantized model
+		 - Zero peformance degredation when loading adapters and can also merge adapters in a dequantized model
 	 - `bitsandbytes` shortcomings:
-		 - 4-bit quantization not serializable.
+		 - 4-bit quantization not serializable (means unable to save 4-bit quantized models).
  - GPTQs
 	 - `auto-gptq` requires CUDA or RoCM (AMD) GPU to do quantization.
 	 - `auto-gptq` benefits:

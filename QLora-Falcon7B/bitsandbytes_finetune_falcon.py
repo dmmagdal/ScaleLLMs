@@ -4,29 +4,46 @@
 # Windows/MacOS/Linux
 
 
+from argparse import ArgumentParser
 import torch
 from datasets import load_dataset
 import transformers
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from transformers import BitsAndBytesConfig
 from peft import prepare_model_for_kbit_training
 from peft import LoraConfig, get_peft_model
 # from trl import SFTTrainer
 
 
 def main():
+	# Parse arguments.
+	parser = ArgumentParser(
+		description="Finetune the quantized falcon 7b model"
+	)
+	parser.add_argument(
+		'--quantize_4_bit',
+		action='store_true',
+		default=False,
+		help="load 4-bit quantized model"
+	)
+	args = parser.parse_args()
+
+	if args.quantize_4_bit:
+		print("Saving 4-bit quantized model is not currently supported in transformers.")
+		print("No model/tokenizer was saved.")
+		exit(0)
+
 	###################################################################
 	# Load the model
 	###################################################################
-	model_id = './bitsandbytes_quantized_4bit_falcon-7b'
+	bits = "4bit" if args.quantize_4_bit else "8bit"
+	model_id = f'./bitsandbytes_quantized_{bits}_falcon-7b'
 	tokenizer = AutoTokenizer.from_pretrained(model_id)
 	model = AutoModelForCausalLM.from_pretrained(
 		model_id,
-		# quantization_config=bnb_config,			# quantizes the model with the above config
 		# device_map={"": 0},						# note that you will need GPU to quantize the model.
 		device_map="auto",
-		# trust_remote_code=True,
 	)
+	print(model)
 
 	# We have to apply some preprocessing to the model to prepare it 
 	# for training. For that use the prepare_model_for_kbit_training 
@@ -72,12 +89,13 @@ def main():
 			per_device_train_batch_size=4,
 			gradient_accumulation_steps=4,
 			warmup_ratio=0.03,
-			max_steps=500,
+			# max_steps=500,					# old max_steps
+			max_steps=100,						# new max_steps (wanted something sooner)
 			max_grad_norm=0.3,
 			learning_rate=2e-4,
 			logging_steps=10,
 			save_steps=10,
-			output_dir="results",
+			output_dir=f"{bits}-results",
 			optim="paged_adamw_32bit"
 		),
 		data_collator=transformers.DataCollatorForLanguageModeling(
@@ -91,10 +109,11 @@ def main():
 	###################################################################
 	# Save and load the finetuned/quantized model
 	###################################################################
+	save = f"{bits}-falcon7b-results-model"
 	model_to_save = trainer.model.module if hasattr(trainer.model, 'module') else trainer.model  # Take care of distributed/parallel training
-	model_to_save.save_pretrained("results-model")
+	model_to_save.save_pretrained(save)
 
-	lora_config = LoraConfig.from_pretrained('results-model')
+	lora_config = LoraConfig.from_pretrained(save)
 	model = get_peft_model(model, lora_config)
 
 	###################################################################

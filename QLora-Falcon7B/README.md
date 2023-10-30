@@ -14,8 +14,28 @@ Description: This is a quick example of finetuning the Falcon 7B model with QLor
 	 - I am considering alternatives such as GGML/GGUL and GPTQ for quantizing the models. Actual finetuning may be different as a result but I have to get to that part next.
 	 - UPDATE 10/10/2023: Using python's `virtualenv` allowed me to get around this issue. I am now able to run `bitsandbytes` to peform the model quantization. I still need to figure out the finetuning part with `peft`. 
  - Testing
+	 - Linux (my Darkstar GPU server)
+		 - Using `device_map="auto"` works as well as `device_map={"": 0}`.
+		 - Be aware that the `torch` version in `requirements.txt` may not work properly on the first try when you set up the `virtualenv`. I'd advise everyone to use the necessary install command from the PyTorch website (just specify the correct version).
  - Quantization
+	 - Falcon 7B
+		 - Programs
+			 - `bitsandbytes_quantize_falcon.py`
+			 - `finetune_falcon.py`
+		 - Results/Notes
+			 - Was able to quantize falcon 7b from `tiiuae/falcon-7b` on my Darkstar GPU server with the `finetune_falcon.py` and `bitsandbytes_quantize_falcon.py` scripts. 
+			 - Note that as of now (10/30/2023), saving 4-bit quantized models is not possible. Quantized models as small as 8-bit can be serialized and saved. This extends to both saving locally and pushing to huggingface hub. As a result, the optional parameter `--quantize_4_bit` is available for the `bitsandbytes_quantize_falcon.py` script to determine whether to quantize the model in 8-bit (default) or 4-bit (wont save the model). Since `finetune_falcon.py` only does 4-bit quantization, it has to pull from huggingface hub/cache every time it runs (its only saved outputs are the Lora adapater model outputs from the finetuning).
+			 - For the `bitsandbytes_quantize_falcon.py`` script (8-bit quantization), the VRAM usage was around 8.2GB VRAM (so a 12 to 16GB card is very much recommended for 7B models). Actual RAM usage was around 14.5GB but would still recommend using 16GB RAM. The quantization process (running the script) takes around 3 minutes.
+			 - The resulting 8-bit quantized model in `bitsandbytes_quantized_8bit_falcon-7b/` folder (and the tokenizer) comes out to around 6.8 GB on disk.
  - Finetuning
+	 - Falcon 7B
+		 - Programs
+			 - `bitsandbytes_finetune_falcon.py`
+			 - `finetune_falcon.py`
+		 - Results/Notes
+			 - Was able to successfully run both scripts to completion.
+			 - `bitsandbytes_finetune_falcon.py` uses an 8-bit quantized version of the model that was created and saved locally by `bitsandbytes_quantize_falcon.py` while `finetune_falcon.py` uses a 4-bit quantized version of the model it creats itself (it cannot save it because that is not yet supported).
+			 - The resulting adapter model in `results-model/` (or `8bit-falcon7b-results-model/` if using `bitsandbytes_finetune_falcon.py`) folder (and the tokenizer) comes out to around 73 MB on disk.
  - Exporting to ONNX
 	 - Created and ran the `export_onnx_falcon.py` script to test if I can export falcon 7b (4-bit quantized with `bitsandbytes`) to ONNX based one the code found on this [blog post](https://huggingface.co/blog/convert-transformers-to-onnx). The script takes only the quantized model into consideration, **not** a quantized model that's been finetuned with `peft`.
 	 - 10/30/2023: Ran the first test of the export script. For "mid-level" export with `transformers.onnx`, the model was downloaded and quantized but saw the following error:
@@ -31,7 +51,7 @@ ValueError: not enough values to unpack (expected 4, got 0)
 ```
 ValueError: Trying to export a falcon model, that is a custom or unsupported architecture for the task text-generation-with-past, but no custom onnx configuration was passed as `custom_onnx_configs`. Please refer to https://huggingface.co/docs/optimum/main/en/exporters/onnx/usage_guides/export_a_model#custom-export-of-transformers-models for an example on how to export custom models. For the task text-generation-with-past, the Optimum ONNX exporter supports natively the architectures: ['bart', 'blenderbot', 'blenderbot_small', 'bloom', 'codegen', 'gpt2', 'gpt_bigcode', 'gptj', 'gpt_neo', 'gpt_neox', 'marian', 'mbart', 'mpt', 'opt', 'llama', 'pegasus'].
 ```
-	 - 10/30/2023 (continued): It is another case of the falcon model not being a part of the list of currently supported models.
+	 - 10/30/2023 (continued): It is another case of the falcon model not being a part of the list of currently supported models. The same can be replicated if using the `optimum-cli` tool to export the model ([documentation here](https://huggingface.co/docs/optimum/exporters/onnx/usage_guides/export_a_model); the command is `optimum-cli export onnx --model tiiuae/falcon-7b falcon-7b_onnx/`)
 
 
 ### References
