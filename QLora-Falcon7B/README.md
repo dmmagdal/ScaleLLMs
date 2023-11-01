@@ -3,6 +3,24 @@
 Description: This is a quick example of finetuning the Falcon 7B model with QLora given a set of text.
 
 
+### Setup
+
+ - It is recommended that you create a python virtual environment instead of a conda due to version issues with a lot of necessary packages.
+ - To set up the virtual environment, install the `venv` package:
+	 - `pip3 install virtualenv`
+ - Create the new virtual environment:
+	 - `python -m venv autogptq-env`
+ - Activate the virtual environment:
+	 - Linux/MacOS: `source autogptq-env/bin/activate`
+	 - Windows: `.\autogptq-env\Scripts\activate`
+ - Deactivate the virtual environment:
+	 - `deactivate`
+ - Install the necessary packages (while the virtual environment is active):
+	 - `(autogptq-env) pip3 install -r requirements.txt`
+ - Also be sure to install the necessary version of `pytorch` according to your OS (refer to the `pytorch` website but the following command will help):
+	 - Linux & Windows (CUDA 11.8): `pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118`
+
+
 ### Notes
 
  - LLM models I want to quantize:
