@@ -61,10 +61,10 @@ def main():
 	text = "Elon Musk "
 	device = "cuda:0"
 
+	tokenizer.pad_token = tokenizer.eos_token
 	inputs = tokenizer(text, return_tensors="pt").to(device)
-	with torch.no_grad():
-		outputs = peft_model.generate(**inputs, max_new_tokens=20)
-		print(tokenizer.decode(outputs[0], skip_special_tokens=True))
+	outputs = peft_model.generate(**inputs, max_new_tokens=20)
+	print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 
 	###################################################################
 	# Merge adapter back into model
