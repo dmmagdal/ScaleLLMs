@@ -33,7 +33,7 @@ onnxruntime==1.16.1
 optimum==1.13.2
 packaging==23.2
 pandas==2.1.1
-peft==0.5.0
+peft==0.6.2
 Pillow==9.3.0
 protobuf==4.24.4
 psutil==5.9.5

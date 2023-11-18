@@ -55,6 +55,14 @@ Description: This is a quick example of finetuning the Falcon 7B model with QLor
 			 - `bitsandbytes_finetune_falcon.py` uses an 8-bit quantized version of the model that was created and saved locally by `bitsandbytes_quantize_falcon.py` while `finetune_falcon.py` uses a 4-bit quantized version of the model it creats itself (it cannot save it because that is not yet supported).
 			- For the `bitsandbytes_finetune_falcon.py`` script (8-bit quantization), the VRAM usage was around 26.1GB VRAM (so a 36 to 48GB card is very much recommended for 7B models; it may be prudent to acquire a few cards for this process actually). Actual RAM usage was around 7.4GB but would still recommend using 16GB RAM. The quantization process (running the script) can take a long time depnending on the number of steps/epochs (100 steps took around 20 minutes).
 			 - The resulting adapter model in `results-model/` (or `8bit-falcon7b-results-model/` if using `bitsandbytes_finetune_falcon.py`) folder (and the tokenizer) comes out to around 73 MB on disk.
+ - Loading/Inference
+	 - Falcon 7B
+		 - Programs
+			 - `bitsandbytes_load_lora_falcon.py`
+		 - Results/Notes
+			 - Was able to successfully run the script to completion.
+			 - When it comes to merging the Lora adapter with the base model (at the end of the script), there was an issue with Int8 compatibility/support on my DarkStar GPU server. The server has 3x Nvidia Tesla P100 GPUs which do not contain Int8 Tensor Cores (see this nvidia [documentation](https://docs.nvidia.com/deeplearning/tensorrt/support-matrix/index.html#hardware-precision-matrix)). As such, I cannot properly test merging the adapter into the base model and saving it. Refer to the linked documentation to see cards that do support such function and uncomment the lines to test them there.
+			 - The peft config base_model_name_or_path contains the respective name or path of the model that was used to train. For instance, if the base model used to train the adapter was the 8bit quantized falcon 7b model saved under `./bitsandbytes_quantized_8bit_falcon-7b` (a local save) or it can use a name for a model pulled from huggingface hub (see this [blog post](https://huggingface.co/blog/peft)).
  - Exporting to ONNX
 	 - Created and ran the `export_onnx_falcon.py` script to test if I can export falcon 7b (4-bit quantized with `bitsandbytes`) to ONNX based one the code found on this [blog post](https://huggingface.co/blog/convert-transformers-to-onnx). The script takes only the quantized model into consideration, **not** a quantized model that's been finetuned with `peft`.
 	 - 10/30/2023: Ran the first test of the export script. For "mid-level" export with `transformers.onnx`, the model was downloaded and quantized but saw the following error:
@@ -86,6 +94,8 @@ ValueError: Trying to export a falcon model, that is a custom or unsupported arc
 	 - [Huggingface blog](https://huggingface.co/blog/4bit-transformers-bitsandbytes)
      - [Huggingface blog on peft](https://huggingface.co/blog/peft)
 	 - [Link to QLora paper](https://huggingface.co/papers/2305.14314) on Huggingface
+	 - [Peft PeftModelForCausalLM](https://huggingface.co/docs/peft/package_reference/peft_model#peft.PeftModelForCausalLM)
+	 - [Peft LoraConfig.merge_and_unload()](https://huggingface.co/docs/peft/v0.6.2/en/package_reference/tuners#peft.LoraModel.merge_and_unload)
 	 - [Optimum inference with ONNX Runtime](https://huggingface.co/docs/optimum/v1.2.1/en/onnxruntime/modeling_ort) on Huggingface
 	 - [Huggingface blog on convert transformers to onnx with optimum](https://huggingface.co/blog/convert-transformers-to-onnx)
  - tutorial
@@ -96,6 +106,8 @@ ValueError: Trying to export a falcon model, that is a custom or unsupported arc
 	 - [Medium article](https://medium.com/@srishtinagu19/quantizing-falcon-7b-instruct-for-running-inference-on-colab-bd97066aa49d) to Quantize Falcon 7B Instruct for running inference on colab
 	 - [Medium article](https://vilsonrodrigues.medium.com/run-your-private-llm-falcon-7b-instruct-with-less-than-6gb-of-gpu-using-4-bit-quantization-ff1d4ffbabcc) to Run your private LLM: Falcon-7B-Instruct with less than 6GB of GPU using 4-bit quantization
 	 - [Medium article](https://medium.com/@amodwrites/a-definitive-guide-to-qlora-fine-tuning-falcon-7b-with-peft-78f500a1f337) on a definitive guide to QLora finetuning of falcon 7b with peft
+	 - [Medium article](https://abvijaykumar.medium.com/fine-tuning-llm-parameter-efficient-fine-tuning-peft-lora-qlora-part-1-571a472612c4) on finetuning llm with parameter efficient (peft) - lora & qlora part 1
+	 - [Medium article](https://abvijaykumar.medium.com/fine-tuning-llm-parameter-efficient-fine-tuning-peft-lora-qlora-part-2-d8e23877ac6f) on finetuning llm with parameter efficient (peft) - lora & qlora part 2
  - model
 	 - [GPT-NeoX-20B](https://huggingface.co/EleutherAI/gpt-neox-20b)
 	 - [Falcon-7B](https://huggingface.co/tiiuae/falcon-7b)

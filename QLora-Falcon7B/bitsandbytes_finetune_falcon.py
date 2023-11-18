@@ -126,6 +126,9 @@ def main():
 	outputs = model.generate(**inputs, max_new_tokens=20)
 	print(tokenizer.decode(outputs[0], skip_special_tokens=True))
 
+	# Exit the program.
+	exit(0)
+
 
 def print_trainable_parameters(model):
 	"""
