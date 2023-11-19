@@ -88,6 +88,7 @@ ValueError: Trying to export a falcon model, that is a custom or unsupported arc
 	 - [BitsAndBytesConfig](https://huggingface.co/docs/transformers/main_classes/quantization#transformers.BitsAndBytesConfig)
 	 - [Quantization](https://huggingface.co/docs/transformers/v4.34.0/en/main_classes/quantization#quantization)
 	 - [Quantization concept](https://huggingface.co/docs/text-generation-inference/conceptual/quantization)
+	 - [Transformers documentation on loading and training adapters with peft](https://huggingface.co/docs/transformers/peft)
 	 - [Lora](https://huggingface.co/docs/peft/conceptual_guides/lora)
 	 - [PeftConfig](https://huggingface.co/docs/peft/main/en/package_reference/config#peft.PeftConfig)
 	 - [Peft GitHub](https://github.com/huggingface/peft)
@@ -101,6 +102,8 @@ ValueError: Trying to export a falcon model, that is a custom or unsupported arc
 	 - [Optimum documentation on exporting a model to onnx with optimum.exporters.onnx](https://huggingface.co/docs/optimum/exporters/onnx/usage_guides/export_a_model)
 	 - [Quantization with Accelerate](https://huggingface.co/docs/accelerate/v0.23.0/en/usage_guides/quantization)
 	 - [Accelerate saving and loading](https://huggingface.co/docs/accelerate/v0.23.0/en/package_reference/accelerator#saving-and-loading)
+	 - [Transformers export to ONNX](https://huggingface.co/docs/transformers/serialization)
+	 - [PyTorch export to ONNX](https://pytorch.org/tutorials/advanced/super_resolution_with_onnxruntime.html)
  - tutorial
 	 - [GPT-Neo Video](https://www.youtube.com/watch?v=NRVaRXDoI3g)
 	 - [GPT-Neo Collab](https://colab.research.google.com/drive/1Vvju5kOyBsDr7RX_YAvp6ZsSOoSMjhKD?usp=sharing#scrollTo=E0Nl5mWL0k2T)
@@ -111,6 +114,7 @@ ValueError: Trying to export a falcon model, that is a custom or unsupported arc
 	 - [Medium article](https://medium.com/@amodwrites/a-definitive-guide-to-qlora-fine-tuning-falcon-7b-with-peft-78f500a1f337) on a definitive guide to QLora finetuning of falcon 7b with peft
 	 - [Medium article](https://abvijaykumar.medium.com/fine-tuning-llm-parameter-efficient-fine-tuning-peft-lora-qlora-part-1-571a472612c4) on finetuning llm with parameter efficient (peft) - lora & qlora part 1
 	 - [Medium article](https://abvijaykumar.medium.com/fine-tuning-llm-parameter-efficient-fine-tuning-peft-lora-qlora-part-2-d8e23877ac6f) on finetuning llm with parameter efficient (peft) - lora & qlora part 2
+	 - [medium article](https://yashugupta-gupta11.medium.com/qlora-efficient-finetuning-of-large-language-model-falcon-7b-using-quantized-low-rank-adapters-2df59a7982d5) on Qlora efficient finetuning of large language model (Falcon 7b) using quantized low rank adapters
  - model
 	 - [GPT-NeoX-20B](https://huggingface.co/EleutherAI/gpt-neox-20b)
 	 - [Falcon-7B](https://huggingface.co/tiiuae/falcon-7b)
