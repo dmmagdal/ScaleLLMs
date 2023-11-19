@@ -98,6 +98,7 @@ ValueError: Trying to export a falcon model, that is a custom or unsupported arc
 	 - [Peft LoraConfig.merge_and_unload()](https://huggingface.co/docs/peft/v0.6.2/en/package_reference/tuners#peft.LoraModel.merge_and_unload)
 	 - [Optimum inference with ONNX Runtime](https://huggingface.co/docs/optimum/v1.2.1/en/onnxruntime/modeling_ort) on Huggingface
 	 - [Huggingface blog on convert transformers to onnx with optimum](https://huggingface.co/blog/convert-transformers-to-onnx)
+	 - [Optimum documentation on exporting a model to onnx with optimum.exporters.onnx](https://huggingface.co/docs/optimum/exporters/onnx/usage_guides/export_a_model)
  - tutorial
 	 - [GPT-Neo Video](https://www.youtube.com/watch?v=NRVaRXDoI3g)
 	 - [GPT-Neo Collab](https://colab.research.google.com/drive/1Vvju5kOyBsDr7RX_YAvp6ZsSOoSMjhKD?usp=sharing#scrollTo=E0Nl5mWL0k2T)
