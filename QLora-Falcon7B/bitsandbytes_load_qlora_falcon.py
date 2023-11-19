@@ -74,7 +74,11 @@ def main():
 	# the merged QLora model rather than load the base model and merge
 	# it with the Lora adapter like we did above.
 	# merged_model = peft_model.merge_and_unload(progressbar=True)
-	# merged_model.save_pretrained(f'{bits}-merged-qlora-and-base-falcon7b-model')
+	# merged_model.save_pretrained(
+	# 	f'{bits}-merged-qlora-and-base-falcon7b-model',
+	# 	save_adapter=True,
+	# 	save_config=True,	
+	# ) # Reference on args: https://github.com/onnx/onnx/issues/5326#issuecomment-1759518565
 
 	# NOTE: This may have adverse affects depending on the GPU you have
 	# on your system. I have personally gotten the

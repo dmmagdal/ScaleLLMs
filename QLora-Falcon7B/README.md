@@ -99,6 +99,8 @@ ValueError: Trying to export a falcon model, that is a custom or unsupported arc
 	 - [Optimum inference with ONNX Runtime](https://huggingface.co/docs/optimum/v1.2.1/en/onnxruntime/modeling_ort) on Huggingface
 	 - [Huggingface blog on convert transformers to onnx with optimum](https://huggingface.co/blog/convert-transformers-to-onnx)
 	 - [Optimum documentation on exporting a model to onnx with optimum.exporters.onnx](https://huggingface.co/docs/optimum/exporters/onnx/usage_guides/export_a_model)
+	 - [Quantization with Accelerate](https://huggingface.co/docs/accelerate/v0.23.0/en/usage_guides/quantization)
+	 - [Accelerate saving and loading](https://huggingface.co/docs/accelerate/v0.23.0/en/package_reference/accelerator#saving-and-loading)
  - tutorial
 	 - [GPT-Neo Video](https://www.youtube.com/watch?v=NRVaRXDoI3g)
 	 - [GPT-Neo Collab](https://colab.research.google.com/drive/1Vvju5kOyBsDr7RX_YAvp6ZsSOoSMjhKD?usp=sharing#scrollTo=E0Nl5mWL0k2T)
@@ -112,3 +114,5 @@ ValueError: Trying to export a falcon model, that is a custom or unsupported arc
  - model
 	 - [GPT-NeoX-20B](https://huggingface.co/EleutherAI/gpt-neox-20b)
 	 - [Falcon-7B](https://huggingface.co/tiiuae/falcon-7b)
+ - github
+	 - [Issue on ONNX repo](https://github.com/onnx/onnx/issues/5326) regarding exporting LoRA models to ONNX ([most recent/helpful post on the thread](https://github.com/onnx/onnx/issues/5326#issuecomment-1759518565))

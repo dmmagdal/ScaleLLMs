@@ -68,6 +68,8 @@ Description: This repo aims to look at different techniques that can allow for L
 		 - works for language models only (at the time of writing this 10/10/2023)
  - GGML/GGUF
 	 - Models quantized with GGML/GGUF [do NOT currently support any form of finetuning](https://github.com/ggerganov/ggml/issues/8) (and are therefore limited to just inference).
+ - AWQ
+	 - `autoawq` requires CUDA GPU to do quantization
  - Can finetune quantized models with `peft` library from huggingface (for GPTQ and QLora quantization)
 	 - PEFT stands for "parameter efficient finetuning".
 	 - Training on quantized models is not possible.
@@ -94,3 +96,5 @@ Description: This repo aims to look at different techniques that can allow for L
  - Huggingface Transformers [documentation on quantization](https://huggingface.co/docs/text-generation-inference/conceptual/quantization)
  - Huggingface Transformers [overview of quantization](https://github.com/huggingface/blog/blob/main/overview-quantization-transformers.md) on GitHub
  - Huggingface Optimum [documentation on quantization](https://huggingface.co/docs/optimum/concept_guides/quantization)
+ - Huggingface Transformers [documentation on quantization](https://huggingface.co/docs/transformers/main_classes/quantization)
+ - Huggingface Accelerate [documentation on estimating model footprint on memory](https://huggingface.co/docs/accelerate/v0.23.0/en/usage_guides/model_size_estimator)
