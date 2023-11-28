@@ -79,6 +79,7 @@ ValueError: not enough values to unpack (expected 4, got 0)
 ValueError: Trying to export a falcon model, that is a custom or unsupported architecture for the task text-generation-with-past, but no custom onnx configuration was passed as `custom_onnx_configs`. Please refer to https://huggingface.co/docs/optimum/main/en/exporters/onnx/usage_guides/export_a_model#custom-export-of-transformers-models for an example on how to export custom models. For the task text-generation-with-past, the Optimum ONNX exporter supports natively the architectures: ['bart', 'blenderbot', 'blenderbot_small', 'bloom', 'codegen', 'gpt2', 'gpt_bigcode', 'gptj', 'gpt_neo', 'gpt_neox', 'marian', 'mbart', 'mpt', 'opt', 'llama', 'pegasus'].
 ```
 	 - 10/30/2023 (continued): It is another case of the falcon model not being a part of the list of currently supported models. The same can be replicated if using the `optimum-cli` tool to export the model ([documentation here](https://huggingface.co/docs/optimum/exporters/onnx/usage_guides/export_a_model); the command is `optimum-cli export onnx --model tiiuae/falcon-7b falcon-7b_onnx/`)
+	 - 11/28/2023: Would recommend waiting for huggingface modules to update to finally support LLMs past Llama 1.
 
 
 ### References
