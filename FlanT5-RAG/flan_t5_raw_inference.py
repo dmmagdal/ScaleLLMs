@@ -6,7 +6,8 @@
 
 
 import torch
-from transformers import T5Tokenizer, T5ForConditionalGeneration
+# from transformers import T5Tokenizer, T5ForConditionalGeneration
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 
 def main():
@@ -19,13 +20,15 @@ def main():
 
 	# Model ID (variant of model to load).
 	# model_id = "google/flan-t5-small"
-	# model_id = "google/flan-t5-base"
-	model_id = "google/flan-t5-large"			# Can run on 8GB memory
+	model_id = "google/flan-t5-base"
+	# model_id = "google/flan-t5-large"			# Can run on 8GB memory (may OOM if default generate() parameters are changed)
 	# model_id = "google/flan-t5-xl"			# Requires 16GB memory to run
 	
 	# Initialize tokenizer & model.
-	tokenizer = T5Tokenizer.from_pretrained(model_id)
-	model = T5ForConditionalGeneration.from_pretrained(model_id)
+	# tokenizer = T5Tokenizer.from_pretrained(model_id)
+	# model = T5ForConditionalGeneration.from_pretrained(model_id)
+	tokenizer = AutoTokenizer.from_pretrained(model_id)
+	model = AutoModelForSeq2SeqLM.from_pretrained(model_id)
 
 	# Pass model to device.
 	model = model.to(device)
@@ -44,7 +47,17 @@ def main():
 			text_input, 
 			return_tensors='pt'
 		).input_ids.to(device)
-		output = model.generate(input_ids, max_length=512)
+		# output = model.generate(input_ids, max_length=512)
+		output = model.generate(
+			input_ids, 
+			min_length=64,				# default 0, the min length of the sequence to be generated (corresponds to input_prompt + max_new_tokens)
+			max_length=512,				# default 20, the max langth of the sequence to be generated (corresponds to input_prompt + max_new_tokens)
+			length_penalty=2,			# default 1.0, exponential penalty to the length that is used with beam based generation
+			temperature=0.7,			# default 1.0, the value used to modulate the next token probabilities
+			num_beams=16, 				# default 4, number of beams for beam search
+			no_repeat_ngram_size=3,		# default 3
+			early_stopping=True,		# default False, controls the stopping condition for beam-based methods
+		)	# more detailed configuration for the model generation parameters. Depending on parameters, may cause OOM. Should play around with them to get desired output.
 		print(tokenizer.decode(output[0], skip_special_tokens=True))
 
 	# Notes:
@@ -55,6 +68,14 @@ def main():
 	#	the tiger.". As you can see, the responses are quite short. 
 	#	It's not *ideal* for a ChatGPT alternative but seems quite 
 	#	capable.
+	# -> Passing custom parameters to the model.generate() function
+	#	yields much more detailed output. The downside is that it
+	#	requires tuning and these parameters cannot be adjusted
+	#	"on the fly" in a live application unless using a jupyter 
+	#	notebook.
+	# -> Using AutoTokenizer and AutoModelForSeq2SeqLM give no warning
+	#	messages when initializing the model compared to using the
+	#	T5Tokenizer and T5ModelForConditionalGeneration classes.
 
 	# Exit the program.
 	exit(0)
