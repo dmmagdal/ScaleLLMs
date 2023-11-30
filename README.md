@@ -75,12 +75,12 @@ Description: This repo aims to look at different techniques that can allow for L
 	 - Training on quantized models is not possible.
  - Overall notes on my experience with quantization and finetuning
 	 - The reliance on (primarily CUDA) GPUs is a detriment to the democratization of AI models. Current quantization methods (QLora and GPTQ) do a lot to allow for LLMs to be fine tuned and run on consumer desktops. However, not everyone has the budget for a GPU with the necessary VRAM to perform the quantization (looks to be 12-16+ GB VRAM for things like a 7b parameter model) on LLMs. This is only exasterbated by the reliance on NVIDIA cards. I understand `auto-gptq` allows for RoCm AMD cards to work as well but there is a blatant emphasis on CUDA support. Apple silicon is not viable for any quantization package at this time (10/21/2023) as support for MPS is not included in any of the major packages (`bitsandbytes` and `auto-gptq`), which cuts out another group of potential users (especially as Apple puts more effort into creating powerful hardware like their mac studio or mac station).
-	 - Speaking of neglected users, Windows users have to rely on other packages and work arounds to get `bitsandbytes` working for their environments. While the community has banded together to come up with the necessary 
+	 - Speaking of neglected users, Windows users have to rely on other packages and work arounds to get `bitsandbytes` working for their environments. While the community has banded together to come up with the necessary work arounds, it should not be up to them to create guides that just "duct tape" around the core problem.
 	 - Quantizing Falcon 7B (with `auto-gptq`) took more resources than my Dell XPS Desktop was able to give (would usually OOM for the GPU). On Colab instances (free tier for Google and Kaggle) there would be other issues concerning not enough memory (regular RAM) or setting up the environment with the necessary modules (Kaggle was having a weird time importing/using `auto-gptq` despite the import command being run several times).
 		 - Note on Colab and Kaggle free tier instances:
 			 - Colab free tier has 12.7GB RAM and 16GB VRAM (Nvidia T4).
 			 - Kaggle free tier has 29GB RAM and 2x 16GB VRAM (Nvidia T4).
-	 - Why learn how to quantize a model when others are already doing it?
+	 - Why learn how to quantize a model when others are already doing it for you?
 		 - It's good to know how things work.
 		 - You have more control over your models (other people's models/copies can be faulty, corrupted, tampered, or censored).
 	 - What should you do if you cannot quantize a model (ie package error messages, insufficient hardware, etc)?
