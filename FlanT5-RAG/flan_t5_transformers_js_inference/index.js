@@ -10,6 +10,7 @@ async function  main () {
     // const model_id = 'dmmagdal/flan-t5-base-onnx';
     // const model_id = 'dmmagdal/flan-t5-large-onnx';
     // const model_id = 'dmmagdal/flan-t5-xl-onnx';
+    const cache_dir = model_id.replace('dmmagdal/', '');
     let tokenizer = await AutoTokenizer.from_pretrained(
         model_id,
         {
@@ -17,10 +18,10 @@ async function  main () {
         }
     );
     let model = await AutoModelForSeq2SeqLM.from_pretrained(
-        model_id, 
+        model_id,
         {
-            quantized: false, // passing in quantized: false means that transformers.js wont look for the quantized onnx model files
-            cache_dir: model_id.replace('dmmagdal/', ''),   // passing in cache_dir value to specify where to save files locally.
+            quantized: false,       // passing in quantized: false means that transformers.js wont look for the quantized onnx model files
+            cache_dir: cache_dir,   // passing in cache_dir value to specify where to save files locally.
         }
     );
     // let generator = await pipeline(
@@ -28,6 +29,7 @@ async function  main () {
     //     model_id,
     //     {
     //         quantized: false,
+    //         cache_dir: cache_dir,
     //     }
     // );   // pipeline abstraction for all-in-one
 
