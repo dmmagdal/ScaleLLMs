@@ -61,8 +61,9 @@ Description: This is a quick example of using the Flan T5 model Langchain for re
          - Depending on the parameters 
      - Using AutoTokenizer and AutoModelForSeq2SeqLM give no warning messages when initializing the model compared to using the T5Tokenizer and T5ModelForConditionalGeneration classes.
  - Notes from `flan_t5_transformers_js_inference/index.js`:
-     - Exporting the model to ONNX without quantizing it is resulting in issues/errors when trying to load the model using `AutoModelForSeq2SeqLM`
+     - Exporting the model to ONNX without quantizing it is resulting in issues/errors when trying to load the model using `AutoModelForSeq2SeqLM` or the "text2text-generation" `pipeline`
          - To make matters worse, there isn't a way to perform the quantization as the model is not part of the list of models with quantization arguments in the conversion script despite having another script (in the same folder under `supported_models.py`) that claims it has support for the Flan-T5 model.
+         - Update: Found a way to work without the model quantization. By passing in `{quantize: false}` into the `AutoModelForSeq2SeqLM` or `pipeline` constructors, `transformers.js` will not look for the quantized copies of the `.onnx` model files (see [here](https://github.com/xenova/transformers.js/blob/main/src/models.js#L123) in `PretrainedMixin.constructSession()`)
 
 
 ### References
@@ -72,6 +73,8 @@ Description: This is a quick example of using the Flan T5 model Langchain for re
      - [Huggingface Flan T5 Documentation](https://huggingface.co/docs/transformers/model_doc/flan-t5)
      - [Huggingface Text Generation Config](https://huggingface.co/docs/transformers/v4.35.2/en/main_classes/text_generation#transformers.GenerationConfig) (used in `AutoModelForSeq2SeqLM.generate()`)
      - [TransformersJS Models Documentation](https://huggingface.co/docs/transformers.js/api/models): Models
+     - [TransformersJS Pipelines Documentation](https://huggingface.co/docs/transformers.js/pipelines): Pipelines
+     - [TransformersJS Pipelines Documentation](https://huggingface.co/docs/transformers.js/api/pipelines#module_pipelines.Text2TextGenerationPipeline): Text2TextGeneration Pipeline
      - [TransformersJS Guide](https://huggingface.co/docs/transformers.js/tutorials/node): Server-side Inference in Node.js
      - [TransformersJS Guide](https://huggingface.co/docs/transformers.js/custom_usage#convert-your-models-to-onnx): Export a model to ONNX
      - [Transformers Guide](https://huggingface.co/docs/transformers/serialization): Export to ONNX

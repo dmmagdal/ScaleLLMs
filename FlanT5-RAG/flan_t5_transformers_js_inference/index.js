@@ -1,8 +1,7 @@
 // Import modules.
 import * as readline from 'readline';
-import { AutoModelForSeq2SeqLM, AutoTokenizer } from '@xenova/transformers'
-// const readline = require('readline');
-// const { AutoModelForSeq2SeqLM, AutoTokenizer } = require('@xenova/transformers');
+import { AutoModelForSeq2SeqLM, AutoTokenizer } from '@xenova/transformers';
+// import { pipeline } from '@xenova/transformers';
 
 
 async function  main () {
@@ -11,8 +10,26 @@ async function  main () {
     // const model_id = 'dmmagdal/flan-t5-base-onnx';
     // const model_id = 'dmmagdal/flan-t5-large-onnx';
     // const model_id = 'dmmagdal/flan-t5-xl-onnx';
-    let tokenizer = await AutoTokenizer.from_pretrained(model_id);
-    let model = await AutoModelForSeq2SeqLM.from_pretrained(model_id);
+    let tokenizer = await AutoTokenizer.from_pretrained(
+        model_id,
+        {
+            cache_dir: model_id.replace('dmmagdal/', ''),
+        }
+    );
+    let model = await AutoModelForSeq2SeqLM.from_pretrained(
+        model_id, 
+        {
+            quantized: false, // passing in quantized: false means that transformers.js wont look for the quantized onnx model files
+            cache_dir: model_id.replace('dmmagdal/', ''),   // passing in cache_dir value to specify where to save files locally.
+        }
+    );
+    // let generator = await pipeline(
+    //     'text2text-generation', 
+    //     model_id,
+    //     {
+    //         quantized: false,
+    //     }
+    // );   // pipeline abstraction for all-in-one
 
     // Infinite loop. Prompt the model.
     let input_text = '';
@@ -41,6 +58,8 @@ async function  main () {
             { skip_special_tokens: true },
         );
         console.log(decoded);
+        // let decoded_output = await generator(input_text);
+        // console.log(decoded_output);
     }
 
     // Exit the program.
