@@ -33,8 +33,13 @@ Description: This is a quick example of using the Flan T5 model Langchain for re
          - [dmmagdal/flan-t5-large-onnx](https://huggingface.co/dmmagdal/flan-t5-large-onnx) - 6.5GB
          - [dmmagdal/flan-t5-xl-onnx](https://huggingface.co/dmmagdal/flan-t5-xl-onnx) - 23GB
          - [dmmagdal/flan-t5-xxl-onnx](https://huggingface.co/dmmagdal/flan-t5-xxl-onnx) - Could not export to ONNX (OOM on regular memory during conversion, even on my DarkStar GPU server)
-     - Converting the xl and xxl versions of Flan-T5 took up too many resources for a regular computer (any device with 16GB of RAM). A device with 32GB of RAM *may* be able to convert the xl model but more than 64GB of RAM is going to be needed to convert the xxl model.
+     - Converting the xl and xxl versions of Flan-T5 took up too many resources for a regular computer (any device with 16GB of RAM). A device with 32GB of RAM *may* be able to convert the xl model but more than 64GB of RAM is going to be needed to convert the xxl model
      - The above conversion process does not quantize the models. This is their raw conversion.
+     - Upon trying to use the exports above with `transformers.js`, I recieved the following error: `Error: Could not locate file: "https://huggingface.co/dmmagdal/flan-t5-small-onnx/resolve/main/onnx/decoder_model_merged_quantized.onnx".`
+         - This is probably because I didn't use the custom script provided by Xenova's `transformer.js` repo ([here)](https://github.com/xenova/transformers.js/blob/main/scripts/convert.py)) which converts and quantizes the model to ONNX.
+     - Upon running the conversion script provided by Xenova's `transformer.js` repo (command was `python transformers.js/scripts/convert.py --quantize --model_id google/flan-t5-small`), the program would return the following error: `TypeError: quantize_dynamic() got an unexpected keyword argument 'optimize_model'`
+         - After looking at the code itself, there were no quantize parameters for the Flan-T5 model, causing the script to fail the way it did
+         - Removing the `--quantize` argument yielded almost the same output as using the `optimum-cli` command above, with the exception that Xenova's script would organize the `.onnx` model files into their own folder `onnx/` while the `optimum-cli` command would put all outputs in one select folder. The results will yield the same error when trying to use `transformers.js` as above
  - Flan-T5 model sizes (according to [this medium article](https://medium.com/@koki_noda/try-language-models-with-python-google-ais-flan-t5-ba72318d3be6)):
      - Flan T5 small - 80M (297MB on disk)
      - Flan T5 base - 250M (948MB on disk)
@@ -55,6 +60,9 @@ Description: This is a quick example of using the Flan T5 model Langchain for re
      - Passing custom parameters to the model.generate() function yields much more detailed output. The downside is that it requires tuning and these parameters cannot be adjusted "on the fly" in a live application unless using a jupyter notebook.
          - Depending on the parameters 
      - Using AutoTokenizer and AutoModelForSeq2SeqLM give no warning messages when initializing the model compared to using the T5Tokenizer and T5ModelForConditionalGeneration classes.
+ - Notes from `flan_t5_transformers_js_inference/index.js`:
+     - Exporting the model to ONNX without quantizing it is resulting in issues/errors when trying to load the model using `AutoModelForSeq2SeqLM`
+         - To make matters worse, there isn't a way to perform the quantization as the model is not part of the list of models with quantization arguments in the conversion script despite having another script (in the same folder under `supported_models.py`) that claims it has support for the Flan-T5 model.
 
 
 ### References
@@ -63,10 +71,13 @@ Description: This is a quick example of using the Flan T5 model Langchain for re
      - [Huggingface T5 Documentation](https://huggingface.co/docs/transformers/model_doc/t5)
      - [Huggingface Flan T5 Documentation](https://huggingface.co/docs/transformers/model_doc/flan-t5)
      - [Huggingface Text Generation Config](https://huggingface.co/docs/transformers/v4.35.2/en/main_classes/text_generation#transformers.GenerationConfig) (used in `AutoModelForSeq2SeqLM.generate()`)
+     - [TransformersJS Models Documentation](https://huggingface.co/docs/transformers.js/api/models): Models
+     - [TransformersJS Guide](https://huggingface.co/docs/transformers.js/tutorials/node): Server-side Inference in Node.js
      - [TransformersJS Guide](https://huggingface.co/docs/transformers.js/custom_usage#convert-your-models-to-onnx): Export a model to ONNX
      - [Transformers Guide](https://huggingface.co/docs/transformers/serialization): Export to ONNX
      - [Optimum Guide](https://huggingface.co/docs/optimum/exporters/onnx/usage_guides/export_a_model): Export a model to ONNX with optimum.exporters.onnx (optimum-cli)
      - [Huggingface Blog](https://huggingface.co/blog/convert-transformers-to-onnx): Convert Transformers to ONNX with Hugging Face Optimum
+     - [huggingface Documentation](https://huggingface.co/docs/hub/repositories-getting-started): Getting Started with Repositories
      - [Huggingface Blog](https://huggingface.co/blog/getting-started-with-embeddings): Getting Started With Embeddings
  - tutorial
      - [Medium Article](https://blog.searce.com/building-a-video-assistant-leveraging-large-language-models-2e964e4eefa1): Building a video assistant leveraging Large Language Models
@@ -85,7 +96,7 @@ Description: This is a quick example of using the Flan T5 model Langchain for re
      - [flan-t5-xxl](https://huggingface.co/google/flan-t5-xxl)
      - [Xenova/flan-t5-small](https://huggingface.co/Xenova/flan-t5-small) (transformers.js)
      - [Xenova/flan-t5-base](https://huggingface.co/Xenova/flan-t5-base) (transformers.js)
- - references
+ - additional references
      - [Medium Article](https://betterprogramming.pub/is-google-flan-t5-better-than-openai-gpt-3-187fdaccf3a6): Is Google’s Flan-T5 Better Than OpenAI GPT-3?
      - [Exemplary AI Post](https://exemplary.ai/blog/flan-t5): What is FLAN-T5? Is FLAN-T5 a better alternative to GPT-3?
      - [Medium Article](https://medium.com/@koki_noda/try-language-models-with-python-google-ais-flan-t5-ba72318d3be6): Try Language Models with Python: Google AI’s Flan-T5 (premium article)

@@ -1,0 +1,15 @@
+{
+  "name": "flan_t5_transformers_js_inference",
+  "version": "0.0.1",
+  "description": "Run flan-t5 models (converted to ONNX) for inference with transformers.js",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Diego Magdaleno",
+  "license": "ISC",
+  "dependencies": {
+    "@xenova/transformers": "^2.9.0"
+  }
+}
