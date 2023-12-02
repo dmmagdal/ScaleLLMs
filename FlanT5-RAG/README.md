@@ -91,6 +91,8 @@ Description: This is a quick example of using the Flan T5 model Langchain for re
      - [Medium Article](https://medium.com/@xiaohan_63326/fine-tune-fine-tuning-t5-for-text-generation-c51ed54a7941): [Fine Tune] Fine Tuning T5 for Text Generation
      - [Medium Article](https://medium.com/nlplanet/a-full-guide-to-finetuning-t5-for-text2text-and-building-a-demo-with-streamlit-c72009631887): A Full Guide to Finetuning T5 for Text2Text and Building a Demo with Streamlit
      - [YouTube Video](https://www.youtube.com/watch?v=_Qf_SiCLzw4&ab_channel=code_your_own_AI): NEW Flan-T5 Language model | CODE example | Better than ChatGPT?
+     - [mediucm Article](https://betterprogramming.pub/harnessing-retrieval-augmented-generation-with-langchain-2eae65926e82): Harnessing Retrieval Augmented Generation With Langchain
+     - [YouTube Video](https://www.youtube.com/watch?v=mAYS4d0hrek&ab_channel=CodingCrashcourses): LangChain with JavaScript 🦜️ - COMPLETE TUTORIAL - Basics to advanced concept!
  - model
      - [flan-t5-small](https://huggingface.co/google/flan-t5-small)
      - [flan-t5-base](https://huggingface.co/google/flan-t5-base)
@@ -99,6 +101,23 @@ Description: This is a quick example of using the Flan T5 model Langchain for re
      - [flan-t5-xxl](https://huggingface.co/google/flan-t5-xxl)
      - [Xenova/flan-t5-small](https://huggingface.co/Xenova/flan-t5-small) (transformers.js)
      - [Xenova/flan-t5-base](https://huggingface.co/Xenova/flan-t5-base) (transformers.js)
+ - langchain
+     - [Langchain Blog](https://blog.langchain.dev/): Home
+     - [Langchain Blog](https://blog.langchain.dev/js-envs/): Announcing LangChainJS Support for Multiple JS Environments
+     - Python
+        - [Langchain Documentation](https://python.langchain.com/docs/get_started/introduction/): Introduction
+        - [Langchain Documentation](https://python.langchain.com/docs/modules/model_io/llms/): LLMs 
+        - [Langchain Documentation](https://python.langchain.com/docs/integrations/llms/huggingface_hub): LLMs > Huggingface Hub
+        - [Langchain Documentation](https://python.langchain.com/docs/integrations/llms/huggingface_pipelines): LLMs > Huggingface Local Pipelines
+        - [Langchain Documentation](https://python.langchain.com/docs/expression_language/cookbook/retrieval): Cookbook > RAG 
+        - [Langchain Documentation](https://python.langchain.com/docs/modules/agents/): Agents 
+     - JS
+        - [LangchainJS Documentation](https://js.langchain.com/docs/get_started/introduction/): Introduction 
+        - [LangchainJS Documentation](https://js.langchain.com/docs/integrations/llms/): LLMs
+        - [LangchainJS Documentation](https://js.langchain.com/docs/integrations/llms/ollama): LLMs > Ollama 
+        - [LangchainJS Documentation](https://js.langchain.com/docs/integrations/llms/huggingface_inference): LLMs > Huggingface Inference 
+        - [LangchainJS Documentation](https://js.langchain.com/docs/expression_language/cookbook/retrieval): Cookcbook > RAG
+        - [LangchainJS Documentation](https://js.langchain.com/docs/expression_language/cookbook/agents): Cookcbook > Agents
  - additional references
      - [Medium Article](https://betterprogramming.pub/is-google-flan-t5-better-than-openai-gpt-3-187fdaccf3a6): Is Google’s Flan-T5 Better Than OpenAI GPT-3?
      - [Exemplary AI Post](https://exemplary.ai/blog/flan-t5): What is FLAN-T5? Is FLAN-T5 a better alternative to GPT-3?

@@ -20,15 +20,15 @@ from langchain.document_loaders import UnstructuredURLLoader    # load urls into
 
 def main():
 	# Load the data via the document loader.
-    loader = 
+	loader = 
 
-    # Chunk the text based on a chunk size.
+	# Chunk the text based on a chunk size.
 
-    # Fetch numerical embeddings for the text.
+	# Fetch numerical embeddings for the text.
 
-    # Storing the embeddings to a vector store.
+	# Storing the embeddings to a vector store.
 
-    # Similarity search with Flan T5.
+	# Similarity search with Flan T5.
 
 	# Exit the program.
 	exit(0)

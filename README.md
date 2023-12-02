@@ -88,6 +88,23 @@ Description: This repo aims to look at different techniques that can allow for L
 		 - File a bug. In the case of errors from running your quantization + finetuning, there are probably a lot of other people who have encountered the same bug on their system. Keeping up to date or subscribed to those posts may give you either a work around or a note that your issue is going to be resolved in the next update.
 		 - Use a model that's already been quantized. While I mentioned above why *you* may want to perform your own quantization, there are still many people in the community who have gone through the trouble of quantizing the desired model for you (such as [TheBloke](https://huggingface.co/TheBloke)). You will still have to judge how reputable/trustworthy those files are (even if they're using `safetensors`) but there are generally a lot of good actors in the community hoping to enable others to continue their research or work with different large scale models (like LLMs or Stable Diffusion).
 		 - Find another way/model. There are now many versions of models that come out, each version the same architecture but with a different number of parameters (usually as a result of using different number of layers and hyperparameters). Using smaller or distilled models at the cost of accuracy is still a viable option for your work. While this isnt quantization, it can be of tremendous benefit to you. You can also look to see if there is another way of doing things such as quantization. This repo explores QLora, GPTQ, and GGML/GGUF, but is primarily focused on the first two since the last one doesnt allow for finetuning after model quantization. While newer and more efficient methods will be developed, these three give you many options for how to quantize large models.
+ - Notes regarding LLMs + RAG with `langchain.js`
+	 - Currently, `langchain.js` doesn't have a recipe/instructions on how it supports `transformers.js` or ONNXruntime for JS, and primarily uses (usually paid) API calls to LLM hosting services (ie OpenAI, Google Vertex, Huggingface Inference). The python version of langchain allows for custom models (Huggingface Hub) and integration with local Huggingface pipelines. This presents a serious problem to the goal of locally hosted LLMs with RAG on JS applications (desktop, mobile, web extensions).
+		 - Possible Solution 1: Deconstruct the langchain library (JS & python) to figure out how it works. Create a custom framework that strips out 90% of the compatibility with the other LLM API endpoints and works soley with either Huggingface Inference, OpenAI, and `transformers.js`, with `transformers.js` being the only one that works locally.
+			 - Downsides:
+				 - A LOT of work to do (reverse engineering & coding) - very much a "from scratch" approach.
+				 - Limits functionality with the rest of the `langchain.js` library or outright removes a lot of features.
+		 - Possible Solution 1.5: Implement a local server that uses `transformer.js` and/or ONNXruntime. This server is pinged by `langchain.js` whenever it needs to make a call to the LLM. This still requires a bit of reverse engineering & tinkering but limits the scope to just the LLMs module/component.
+			 - Downsides:
+				 - Limits downstream applications to just desktop apps (maybe mobile). Implementing web extensions would be a definite "no go".
+				 - Still requires a lot of work for the reverse engineering. May have to hack in a way for `langchain.js` to support calls to the local server.
+		 - Possible Solution 2: Convert all final models to GGUF/GGML and use Ollama (or LlamaCPP) to host a local endpoint. Ollama and LlamaCPP both have support in `langchain.js`.
+			 - Downsides:
+				 - Not a fan of GGUF/GGML because of it's limits on retraining models.
+				 - Complicates workflow for model training and finetuning. Not sure if the above line disallows for finetuning overall since that would use some quantization to do finetuning AND THEN the model would have to be converted to GGUF/GGML.
+		 - Possible Solution 3; Wait until langchain supports `transformers.js` and ONNXruntime. There is not GitHub issue/ticket tracking this, and timeline for that is unknown given how small `transformers.js` is.
+			 - Downsides:
+				 - Indefinite wait
 
 
 ### References
