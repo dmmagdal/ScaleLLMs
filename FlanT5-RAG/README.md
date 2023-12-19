@@ -91,8 +91,9 @@ Description: This is a quick example of using the Flan T5 model Langchain for re
      - [Medium Article](https://medium.com/@xiaohan_63326/fine-tune-fine-tuning-t5-for-text-generation-c51ed54a7941): [Fine Tune] Fine Tuning T5 for Text Generation
      - [Medium Article](https://medium.com/nlplanet/a-full-guide-to-finetuning-t5-for-text2text-and-building-a-demo-with-streamlit-c72009631887): A Full Guide to Finetuning T5 for Text2Text and Building a Demo with Streamlit
      - [YouTube Video](https://www.youtube.com/watch?v=_Qf_SiCLzw4&ab_channel=code_your_own_AI): NEW Flan-T5 Language model | CODE example | Better than ChatGPT?
-     - [mediucm Article](https://betterprogramming.pub/harnessing-retrieval-augmented-generation-with-langchain-2eae65926e82): Harnessing Retrieval Augmented Generation With Langchain
+     - [Mediucm Article](https://betterprogramming.pub/harnessing-retrieval-augmented-generation-with-langchain-2eae65926e82): Harnessing Retrieval Augmented Generation With Langchain
      - [YouTube Video](https://www.youtube.com/watch?v=mAYS4d0hrek&ab_channel=CodingCrashcourses): LangChain with JavaScript 🦜️ - COMPLETE TUTORIAL - Basics to advanced concept!
+     - [Medium Article](https://medium.com/@onkarmishra/using-langchain-for-question-answering-on-own-data-3af0a82789ed): Using langchain for Question Answering on Own Data
  - model
      - [flan-t5-small](https://huggingface.co/google/flan-t5-small)
      - [flan-t5-base](https://huggingface.co/google/flan-t5-base)
