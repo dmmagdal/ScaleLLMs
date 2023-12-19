@@ -25,7 +25,7 @@ from langchain.embeddings import HuggingFaceEmbeddings					# to use HuggingFace 
 from langchain.vectorstores import FAISS								# vector DB/store
 # from langchain import HuggingFaceHub									# get (llm) model from huggingface hub
 from langchain.llms import HuggingFaceHub									# get (llm) model from huggingface hub
-from langchain.chains.question_answering import load_qa_chain			# 
+from langchain.chains.question_answering import load_qa_chain			# loads a chain that you can use to do QA over a set of documents, but it uses ALL of those documents
 from langchain.chains import RetrievalQA								# combines a Retriever with QnA chain to do question answering
 
 
