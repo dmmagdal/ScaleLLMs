@@ -41,7 +41,7 @@ def main():
 	# Use PyPDFLoader to load PDF file.
 
 	# Load the data via the document loader.
-	pdf_path = "/Users/Max/Downloads/GA-Tech/ML4T/What Hedge Funds Really Do - An Introduction to Portfolio Management.pdf"
+	pdf_path = "What Hedge Funds Really Do - An Introduction to Portfolio Management.pdf"
 	loader = PyPDFLoader(pdf_path)
 	# txt_path = "What_Hedge_Funds_Really_Do.txt"
 	# loader = TextLoader(txt_path)
