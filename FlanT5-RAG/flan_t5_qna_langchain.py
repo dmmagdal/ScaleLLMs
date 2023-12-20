@@ -110,6 +110,7 @@ def main():
 	# Similarity search with Flan T5.
 	llm = HuggingFaceHub(
 		repo_id="google/flan-t5-base", 
+		# repo_id="google/flan-t5-large", # Gives very different outputs.
 		model_kwargs={"temperature": 1, "max_length": 1000000}
 	)
 	chain = load_qa_chain(llm, chain_type="stuff")
