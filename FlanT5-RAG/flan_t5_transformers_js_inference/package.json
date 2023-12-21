@@ -10,6 +10,6 @@
   "author": "Diego Magdaleno",
   "license": "ISC",
   "dependencies": {
-    "@xenova/transformers": "^2.9.0"
+    "@xenova/transformers": "^2.12.1"
   }
 }
