@@ -60,6 +60,8 @@ Description: This is a quick example of using the Flan T5 model Langchain for re
      - Passing custom parameters to the model.generate() function yields much more detailed output. The downside is that it requires tuning and these parameters cannot be adjusted "on the fly" in a live application unless using a jupyter notebook.
          - Depending on the parameters 
      - Using AutoTokenizer and AutoModelForSeq2SeqLM give no warning messages when initializing the model compared to using the T5Tokenizer and T5ModelForConditionalGeneration classes.
+ - Notes from `flan_t5_qna_langchain.py`:
+     - Changing the model for the llm & embeddings affects the output of the RetrievalQA chain. No model in particular has proven to be the best so far. Additional tinkering (with both models and the llm model kwargs) is advised.
  - Notes from `flan_t5_transformers_js_inference/index.js`:
      - Exporting the model to ONNX without quantizing it is resulting in issues/errors when trying to load the model using `AutoModelForSeq2SeqLM` or the "text2text-generation" `pipeline`
          - To make matters worse, there isn't a way to perform the quantization as the model is not part of the list of models with quantization arguments in the conversion script despite having another script (in the same folder under `supported_models.py`) that claims it has support for the Flan-T5 model.

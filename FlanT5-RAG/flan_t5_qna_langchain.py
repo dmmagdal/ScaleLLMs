@@ -6,17 +6,17 @@
 
 
 import os
-from langchain.document_loaders import TextLoader				# load text files
-from langchain.text_splitter import CharacterTextSplitter		# text splitter
-from langchain.embeddings import HuggingFaceEmbeddings			# to use HuggingFace models
-from langchain.vectorstores import FAISS						# vector DB/store
-from langchain.chains.question_answering import load_qa_chain
+# from langchain.document_loaders import TextLoader				# load text files
+# from langchain.text_splitter import CharacterTextSplitter		# text splitter
+# from langchain.embeddings import HuggingFaceEmbeddings			# to use HuggingFace models
+# from langchain.vectorstores import FAISS						# vector DB/store
+# from langchain.chains.question_answering import load_qa_chain
 # from langchain import HuggingFaceHub
-from langchain.llms import HuggingFaceHub
-from langchain.document_loaders import UnstructuredPDFLoader	# load pdf files
-from langchain.indexes import VectorstoreIndexCreator			# vectorize db with ChromaDB
-from langchain.chains import RetrievalQA						# combines a Retriever with QnA chain to do question answering
-from langchain.document_loaders import UnstructuredURLLoader	# load urls into document loader
+# from langchain.llms import HuggingFaceHub
+# from langchain.document_loaders import UnstructuredPDFLoader	# load pdf files
+# from langchain.indexes import VectorstoreIndexCreator			# vectorize db with ChromaDB
+# from langchain.chains import RetrievalQA						# combines a Retriever with QnA chain to do question answering
+# from langchain.document_loaders import UnstructuredURLLoader	# load urls into document loader
 
 
 from langchain.document_loaders import PyPDFLoader						# load pdf files
