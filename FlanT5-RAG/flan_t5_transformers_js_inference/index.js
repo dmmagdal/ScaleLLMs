@@ -1,5 +1,4 @@
 // Import modules.
-// import path from 'path';
 import * as readline from 'readline';
 import { AutoModelForSeq2SeqLM, AutoTokenizer } from '@xenova/transformers';
 // import { pipeline } from '@xenova/transformers';
@@ -16,33 +15,31 @@ async function  main () {
     // flan-t5-large
     //  load time: 45 - 55 seconds
     //  inference time: 10 - 15 seconds
-    const model_path = '../../../../flan-t5-small';
+    // const model_path = '../../../../flan-t5-small';
     // const model_path = '../../../../flan-t5-base';
     // const model_path = '../../../../flan-t5-large';
 
-    // const model_path = '../../../../flan-t5-base-onnx';
-    // const model_id = 'dmmagdal/flan-t5-small-onnx';
-    // const model_id = 'dmmagdal/flan-t5-base-onnx';
-    // const model_id = 'dmmagdal/flan-t5-large-onnx';
-    // const model_id = 'dmmagdal/flan-t5-xl-onnx';
-    // const cache_dir = model_id.replace('dmmagdal/', '');
+    // const model_id = 'dmmagdal/flan-t5-small-onnx-js';
+    // const model_id = 'dmmagdal/flan-t5-base-onnx-js';
+    // const model_id = 'dmmagdal/flan-t5-large-onnx-js';
+    const model_id = 'dmmagdal/flan-t5-xl-onnx-js';
+    const cache_dir = model_id.replace('dmmagdal/', '');
     const loadStart = new Date();
     let tokenizer = await AutoTokenizer.from_pretrained(
-        // model_id,
-        model_path,
+        model_id,
+        // model_path,
         {
-            // cache_dir: model_id.replace('dmmagdal/', ''),
-            // cache_dir: cache_dir,
-            local_files_only: true,
+            cache_dir: cache_dir,
+            // local_files_only: true,
         }
     );
     let model = await AutoModelForSeq2SeqLM.from_pretrained(
-        // model_id,
-        model_path,
+        model_id,       // model_id for downloading from huggingface (requires huggingface token in .env file).
+        // model_path,  // model path for loading model from local storage.
         {
             quantized: false,       // passing in quantized: false means that transformers.js wont look for the quantized onnx model files
-            // cache_dir: cache_dir,   // passing in cache_dir value to specify where to save files locally.
-            local_files_only: true,
+            cache_dir: cache_dir,   // passing in cache_dir value to specify where to save files locally.
+            // local_files_only: true, // use locally stored files.
         }
     );
     // let generator = await pipeline(
@@ -51,6 +48,7 @@ async function  main () {
     //     {
     //         quantized: false,
     //         cache_dir: cache_dir,
+    //         local_files_only: true,
     //     }
     // );   // pipeline abstraction for all-in-one
     const loadEnd = new Date();
