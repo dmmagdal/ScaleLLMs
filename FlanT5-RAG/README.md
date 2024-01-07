@@ -26,17 +26,6 @@ Description: This is a quick example of using the Flan T5 model Langchain for re
 
 ### Notes
 
- - Exported the model with `optimum-cli`. Command `optimum-cli export onnx --model google/flan-t5-base flan-t5-base-onnx` was used to export the base model of Flan-T5 from Google to ONNX. The same can be done for all the other variants.
-     - Currently have all variants of the original Flan-T5 model from Google converted to ONNX on huggingface hub. You can find them here (along with their respective size on disk):
-         - [dmmagdal/flan-t5-small-onnx](https://huggingface.co/dmmagdal/flan-t5-small-onnx) - 792MB
-         - [dmmagdal/flan-t5-base-onnx](https://huggingface.co/dmmagdal/flan-t5-base-onnx) - 2.2GB
-         - [dmmagdal/flan-t5-large-onnx](https://huggingface.co/dmmagdal/flan-t5-large-onnx) - 6.5GB
-         - [dmmagdal/flan-t5-xl-onnx](https://huggingface.co/dmmagdal/flan-t5-xl-onnx) - 23GB
-         - [dmmagdal/flan-t5-xxl-onnx](https://huggingface.co/dmmagdal/flan-t5-xxl-onnx) - Could not export to ONNX (OOM on regular memory during conversion, even on my DarkStar GPU server)
-     - Converting the xl and xxl versions of Flan-T5 took up too many resources for a regular computer (any device with 16GB of RAM). A device with 32GB of RAM *may* be able to convert the xl model but more than 64GB of RAM is going to be needed to convert the xxl model
-     - The above conversion process does not quantize the models. This is their raw conversion.
-     - Upon trying to use the exports above with `transformers.js`, I recieved the following error: `Error: Could not locate file: "https://huggingface.co/dmmagdal/flan-t5-small-onnx/resolve/main/onnx/decoder_model_merged_quantized.onnx".`
-         - This is probably because I didn't use the custom script provided by Xenova's `transformer.js` repo ([here)](https://github.com/xenova/transformers.js/blob/main/scripts/convert.py)) which converts and quantizes the model to ONNX.
      - Upon running the conversion script provided by Xenova's `transformer.js` repo (command was `python transformers.js/scripts/convert.py --quantize --model_id google/flan-t5-small`), the program would return the following error: `TypeError: quantize_dynamic() got an unexpected keyword argument 'optimize_model'`
          - After looking at the code itself, there were no quantize parameters for the Flan-T5 model, causing the script to fail the way it did
          - Removing the `--quantize` argument yielded almost the same output as using the `optimum-cli` command above, with the exception that Xenova's script would organize the `.onnx` model files into their own folder `onnx/` while the `optimum-cli` command would put all outputs in one select folder. The results will yield the same error when trying to use `transformers.js` as above
@@ -49,9 +38,9 @@ Description: This is a quick example of using the Flan T5 model Langchain for re
  - Major benefit of Flan-T5 is that most of the model variants (with the exception of xl and/or xxl) can run relatively easily on consumer hardware (even an Apple Silicon macbook). The other LLMs (Llama 1/2, Falcon, Vicuna, Mistral, etc) need to be quantized because they're so large (smallest variant of each is about 7B parameters)
      - Other models that have models with smaller than 7B parameters include the following:
          - GPT 2 (124M, 335M, 774M, 1.5B)
-         - GPT Neo (1.3B & 2.7B)
+         - GPT Neo (125M, 1.3B, 2.7B)
          - GPT J (6B)
-         - OPT (1.3B, 2.7B, 6.7B, 13B, 30B, 66B, 175B)
+         - OPT (125M, 350M, 1.3B, 2.7B, 6.7B, 13B, 30B, 66B, 175B)
          - OpenLlama (3B, 7B, 13B)
          - StableLM (3B, 7B)
      - Note that the models over 1B parameters may need to be quantized to run on consumer hardware. As seen in the QLora-Falcon7B and GPTQ-Falcon7B examples, quantization requires (usually an NVIDIA) GPU at the cost of some degredation in the quality of the output
@@ -63,9 +52,9 @@ Description: This is a quick example of using the Flan T5 model Langchain for re
  - Notes from `flan_t5_qna_langchain.py`:
      - Changing the model for the llm & embeddings affects the output of the RetrievalQA chain. No model in particular has proven to be the best so far. Additional tinkering (with both models and the llm model kwargs) is advised.
  - Notes from `flan_t5_transformers_js_inference/index.js`:
-     - Exporting the model to ONNX without quantizing it is resulting in issues/errors when trying to load the model using `AutoModelForSeq2SeqLM` or the "text2text-generation" `pipeline`
-         - To make matters worse, there isn't a way to perform the quantization as the model is not part of the list of models with quantization arguments in the conversion script despite having another script (in the same folder under `supported_models.py`) that claims it has support for the Flan-T5 model.
-         - Update: Found a way to work without the model quantization. By passing in `{quantize: false}` into the `AutoModelForSeq2SeqLM` or `pipeline` constructors, `transformers.js` will not look for the quantized copies of the `.onnx` model files (see [here](https://github.com/xenova/transformers.js/blob/main/src/models.js#L123) in `PretrainedMixin.constructSession()`)
+     - It is imperative that the Flan-T model be exported with Xenova's `transformers.js` conversion script under the package versions outlined in their `requirements.txt`. Failure to do so will lead to unsuccessful conversions or the converted model not working with the `transformers.js` library.
+         - For more information on the conversion process, as well as links to the converted model, see [here](https://github.com/dmmagdal/HuggingfaceOfflineDownloader/tree/main/onnx_converter/README.md).
+     - If a model was converted without the `--quantize` flag being set, then `{quantize: false}` needs to be passed into the appropriate `AutoModel` class (in this case, `AutoModelForSeq2Seq`) or `pipeline` class constructors. `transformers.js` will not look for quantized copies of the `.onnx` model files (see [here](https://github.com/xenova/transformers.js/blob/main/src/models.js#L123) in `PretrainedMixin.constructSession()`).
 
 
 ### References
