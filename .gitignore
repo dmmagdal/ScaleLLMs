@@ -4,3 +4,7 @@
 **/autogptq-env/
 **/autogptq-env/
 **/flan-t5-*-onnx/
+
+# Specific checkpoint folders.
+QLora-Falcon7B/8bit-falcon7b-results-model/
+QLora-Falcon7B/results-model/
